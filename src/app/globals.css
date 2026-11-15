@@ -237,3 +237,27 @@ html { scroll-padding-top: var(--anchor-offset); }
   .work-button, .submit-button, .menu-tab, .menu-content nav a, .project-media img { transform: none !important; }
   .hero-video { display: none; }
 }
+
+/* Fabricated-control treatment, scoped to the What We Do CTA. */
+.work-button-machine {
+  align-items: center;
+  gap: 12px;
+  padding-right: 10px;
+  box-shadow: 0 2px 0 #181817;
+  transition: transform 200ms cubic-bezier(.2, .75, .25, 1), box-shadow 200ms cubic-bezier(.2, .75, .25, 1), opacity var(--motion-enter) var(--ease-enter), translate var(--motion-enter) var(--ease-enter);
+}
+.work-button-machine:hover { background: var(--charcoal); color: var(--cream); }
+/* Optical compensation for Cinematografica’s high-sitting capital glyphs. */
+.work-button-label { position: relative; top: .07em; line-height: 1; }
+.work-button-icon { display: grid; place-items: center; flex: 0 0 24px; width: 24px; height: 24px; border-radius: 50%; background: var(--gold); color: var(--charcoal); }
+.work-button-icon svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.4; stroke-linecap: square; stroke-linejoin: miter; transition: transform 200ms cubic-bezier(.2, .75, .25, 1); }
+.work-button-machine:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; box-shadow: 0 0 0 7px var(--charcoal); }
+@media (hover: hover) and (pointer: fine) {
+  .work-button-machine:hover { transform: translateY(-3px); box-shadow: 0 5px 0 #181817, 0 8px 12px #28282720; }
+  .work-button-machine:hover .work-button-icon svg { transform: translate(3px, -3px); }
+}
+.work-button-machine:active { transform: translateY(0); box-shadow: 0 1px 0 #181817, inset 0 2px 3px #0005; transition-duration: 80ms; }
+.work-button-machine:active .work-button-icon svg { transform: translate(1px, -1px); transition-duration: 80ms; }
+@media (prefers-reduced-motion: reduce) {
+  .work-button-machine, .work-button-machine .work-button-icon svg { transform: none !important; transition: none !important; }
+}
