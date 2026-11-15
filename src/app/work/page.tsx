@@ -9,7 +9,7 @@ import './portfolio.css';
 export const metadata: Metadata = { title: 'Our Work' };
 export default function Work() {
   return <><Header /><main id="main" className="editorial-portfolio">
-    <header className="wall-heading"><h1 className="display">Our Work<span className="work-period">.</span></h1></header>
+    <h1 className="sr-only">Our Work</h1>
     <ProjectGallery projects={projects} />
     <div className="gallery-home"><Link href="/" className="gallery-home-button display"><span aria-hidden="true">←</span><span>Back to Home</span></Link></div>
 
