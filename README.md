@@ -49,7 +49,7 @@ Do not deploy until the missing production assets and integrations are approved.
 
 The approved composition is retained. Motion uses CSS, IntersectionObserver and a small native Web Animations transition for the modal; no animation dependency is added. `src/components/Motion.tsx` enhances below-fold content once per page visit, keeps initially visible content visible, and removes observers/listeners on navigation. Without JavaScript all content remains visible.
 
-Global tokens in `globals.css` set 180–220ms control responses, 500ms entrances, 400ms exits, and restrained custom easing. Capability and card entrances are staggered by 55ms. Scroll updates are passive and requestAnimationFrame-batched, with gnome displacement capped at 8px and hero wash displacement at 4px. Only transforms and opacity animate; no layout properties animate.
+Global tokens in `globals.css` set 180–220ms control responses, 500ms entrances, 400ms exits, and restrained custom easing. Capability and card entrances are staggered by 55ms. Scroll updates are passive and requestAnimationFrame-batched, with gnome displacement capped at 24px and hero wash displacement at 4px. Only transforms and opacity animate; no layout properties animate.
 
 The hanging menu retains native modal focus containment and Escape handling, returns focus to its trigger, and never delays link navigation. Reduced-motion changes immediately disable scroll reveals, parallax, logo motion and the marquee, finish modal transitions, and use the video poster instead of footage. The reduced-motion logo strip remains manually scrollable.
 

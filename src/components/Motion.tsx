@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 // Progressive enhancement: content is visible before JS and never hidden above the fold.
 export function Motion() {
   const pathname = usePathname();
+  const firstLoad = useRef(true);
   useEffect(() => {
     let frame = 0;
     const targetFor = (hash: string) => {
@@ -39,8 +40,15 @@ export function Motion() {
     };
     // Capture preserves link handlers (including menu close), but avoids Next swallowing repeat hashes.
     document.addEventListener('click', click, true);
-    const initialTarget = targetFor(location.hash);
-    if (initialTarget) scrollTo(initialTarget, false);
+    // Animate anchors only after a deliberate click, never merely on mounting.
+    // Preserve explicit deep links and browser Back/Forward restoration.
+    if (firstLoad.current) {
+      firstLoad.current = false;
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+      if (pathname === '/' && !location.hash && navigation?.type !== 'back_forward') {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }
+    }
     return () => { cancelAnimationFrame(frame); document.removeEventListener('click', click, true); };
   }, [pathname]);
   useEffect(() => {
