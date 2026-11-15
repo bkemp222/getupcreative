@@ -50,7 +50,7 @@ export function Header() {
   return <>
     <header className="site-header gold-panel">
       <AnimatedTigerBackground driftSpeed={43} patternScale={1.1} distortionStrength={0} />
-      <Link className="header-logo" href="/" aria-label="Get Up Creative home"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} loading="eager" fetchPriority="high" sizes="(min-width: 768px) 290px, 55vw" /></Link>
+      <Link className="header-logo" href="/" scroll={false} onNavigate={() => window.scrollTo({ top: 0, left: 0, behavior: 'instant' })} aria-label="Get Up Creative home"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} loading="eager" fetchPriority="high" sizes="(min-width: 768px) 290px, 55vw" /></Link>
       <button ref={trigger} className="menu-tab" type="button" aria-label="Open navigation" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen(true)}><span /><span /><span /></button>
     </header>
     <dialog id="site-menu" ref={dialog} className="menu-dialog" data-state={open ? 'open' : 'closing'} aria-label="Main navigation" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>

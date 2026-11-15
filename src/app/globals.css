@@ -79,7 +79,7 @@ main { overflow: clip; }
 .form-fields label { display: grid; gap: 9px; font-size: 12px; font-weight: 700; }
 input, textarea { width: 100%; border: 0; border-bottom: 1px solid #a9a398; background: transparent; color: var(--charcoal); padding: 8px 0; border-radius: 0; font-size: 16px; }
 textarea { resize: vertical; min-height: 95px; }
-.submit-button { display: flex; align-items: center; justify-content: space-between; gap: 30px; width: 100%; border: 0; background: var(--charcoal); color: var(--cream); border-radius: 24px; padding: 10px 20px; min-height: 54px; font-family: var(--font-display); font-weight: 900; font-size: 26px; line-height: 1; letter-spacing: .035em; text-transform: uppercase; margin-top: 25px; }
+.submit-button { display: flex; align-items: center; justify-content: space-between; gap: 30px; width: 100%; border: 0; background: var(--charcoal); color: var(--cream); border-radius: 24px; padding: 10px 20px; min-height: 54px; font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 1.2; letter-spacing: .06em; text-transform: uppercase; margin-top: 25px; }
 .submit-button:disabled { opacity: .6; cursor: wait; }
 .form-status { font-size: 12px; line-height: 1.5; margin-top: 12px; }
 .form-status:empty { display: none; }
@@ -180,7 +180,7 @@ textarea { resize: vertical; min-height: 95px; }
 .field-error { position: absolute; top: 100%; margin-top: 3px; color: #9a3525; font-size: 10px; line-height: 1.2; font-weight: 500; }
 .field-error:empty { display: none; }
 .submit-button { min-width: 180px; }
-.submit-label { display: block; padding-top: .08em; }
+.submit-label { display: block; }
 .submit-icon { display: grid; place-items: center; flex: 0 0 24px; width: 24px; height: 24px; color: var(--gold); }
 .submit-icon svg { width: 19px; height: 19px; transition: transform var(--motion-control) var(--ease-control); }
 .submit-icon .sending-indicator { border-color: #ffa31340; border-top-color: var(--gold); }
