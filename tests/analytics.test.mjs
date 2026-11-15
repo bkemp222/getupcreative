@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 import vm from 'node:vm';
 import ts from 'typescript';
 const require = createRequire(import.meta.url);
-const compile = async path => ts.transpileModule(await readFile(new URL(path, import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
+const compile = async path => ts.transpileModule(await readFile(new URL(path, import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX } }).outputText;
 const policyExports = {};
 vm.runInNewContext(await compile('../src/lib/analytics-policy.ts'), { exports: policyExports });
 const approvedEnv = { VERCEL: '1', ANALYTICS_GEO_VERIFIED: 'true', ANALYTICS_US_DEFAULT_ON_STATES: 'GA,TX' };
@@ -14,12 +14,13 @@ const clientCode = await compile('../src/lib/analytics-client.ts');
 const componentCode = await compile('../src/components/GoogleAnalytics.tsx');
 const routeCode = await compile('../src/app/api/analytics-policy/route.ts');
 const settle = () => new Promise(resolve => setImmediate(resolve));
-function harness({ policy = regional('US', 'GA'), saved = null, id = 'G-ZZEW8FQTH5', gpc = false, failure = false, deferred = false } = {}) {
+function harness({ policy = regional('US', 'GA'), saved = null, id = 'G-ZZEW8FQTH5', gpc = false, failure = false, deferred = false, session = new Map() } = {}) {
   const handlers = new Map();
   const values = new Map(saved ? [['getup-analytics-consent', saved]] : []);
   const window = { addEventListener: (name, listener) => handlers.set(name, listener) };
   const exports = {}; let requests = 0; let release;
   vm.runInNewContext(clientCode, {
+    sessionStorage: { getItem: key => session.get(key), setItem: (key, value) => session.set(key, value) },
     exports, window, navigator: { globalPrivacyControl: gpc }, process: { env: { NEXT_PUBLIC_GA_ID: id } }, AbortSignal,
     localStorage: { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) },
     fetch: async () => {
@@ -121,4 +122,50 @@ test('regional endpoint exposes no IP/geography and cannot be cached across visi
   assert.equal(exports.dynamic, 'force-dynamic');
   for (const name of ['Cache-Control', 'CDN-Cache-Control', 'Vercel-CDN-Cache-Control']) assert.match(response.headers.get(name), /no-store/);
   return response.json().then(body => assert.deepEqual(Object.keys(body).sort(), ['defaultAllowed', 'globalPrivacyControl', 'reason']));
+});
+
+const receipt = '7cf78384-fbbe-4bd9-86e2-b5df9777b982';
+const leads = h => h.commands().filter(c => c[0] === 'event' && c[1] === 'generate_lead');
+test('confirmed lead sends once, without receipt or contact information, and stays deduplicated across reload', async () => {
+  const session = new Map();
+  const h = harness({ session }); await settle(); h.analyticsLoaded();
+  h.trackConfirmedLead(receipt); h.trackConfirmedLead(receipt); h.analyticsLoaded();
+  assert.equal(leads(h).length, 1);
+  assert.equal(JSON.stringify(leads(h)[0][2]), JSON.stringify({ send_to: 'G-ZZEW8FQTH5' }));
+  const reload = harness({ session }); await settle(); reload.analyticsLoaded();
+  assert.equal(leads(reload).length, 0);
+  reload.trackConfirmedLead(receipt);
+  assert.equal(leads(reload).length, 0);
+});
+test('permitted lead waits for tag readiness and is sent once', async () => {
+  const h = harness(); await settle(); h.trackConfirmedLead(receipt);
+  assert.equal(leads(h).length, 0);
+  h.analyticsLoaded(); h.analyticsLoaded();
+  assert.equal(leads(h).length, 1);
+});
+for (const [name, options] of [
+  ['opt-out', { saved: 'denied' }], ['unknown', { policy: regional(null) }],
+  ['GPC', { saved: 'granted', gpc: true }], ['server GPC', { policy: regional('US', 'GA', approvedEnv, true) }],
+]) test(`no lead with ${name}, and no retroactive replay`, async () => {
+  const h = harness(options); await settle(); h.analyticsLoaded(); h.trackConfirmedLead(receipt);
+  assert.equal(leads(h).length, 0);
+  h.setAnalyticsPreference('granted'); h.trackConfirmedLead(receipt); h.analyticsLoaded();
+  assert.equal(leads(h).length, 0);
+});
+test('withdrawal or script failure drops pending leads', async () => {
+  for (const action of ['deny', 'failure']) {
+    const h = harness(); await settle(); h.trackConfirmedLead(receipt);
+    if (action === 'deny') h.setAnalyticsPreference('denied'); else h.analyticsFailed();
+    h.setAnalyticsPreference('granted'); h.analyticsLoaded();
+    assert.equal(leads(h).length, 0);
+  }
+});
+test('ordinary loading, navigation, and invalid receipts never create leads', async () => {
+  const h = harness(); await settle(); h.analyticsLoaded(); h.render(); h.startAnalytics();
+  for (const value of [undefined, null, {}, '', 'visitor@example.com']) h.trackConfirmedLead(value);
+  assert.equal(leads(h).length, 0);
+});
+test('thank-you page contains no lead emitter or form replay', async () => {
+  const page = await readFile(new URL('../src/app/thank-you/page.tsx', import.meta.url), 'utf8');
+  assert.doesNotMatch(page, /trackConfirmedLead|generate_lead|\/api\/contact/);
 });

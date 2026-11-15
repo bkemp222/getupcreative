@@ -2,6 +2,7 @@
 import { useRef, useState, type FormEvent, type FocusEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { trackConfirmedLead } from '@/lib/analytics-client';
 
 type Field = 'name' | 'email' | 'message' | 'neededBy';
 function fieldError(field: HTMLInputElement | HTMLTextAreaElement) {
@@ -40,6 +41,7 @@ export function Contact() {
       const result = await response.json();
       if (response.ok) {
         // The API must only return success after the delivery provider accepts the message.
+        trackConfirmedLead(result.receipt);
         form.reset();
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         router.push('/thank-you', { scroll: false });

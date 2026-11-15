@@ -33,6 +33,5 @@ export function Hero() {
     {videoSource && <video ref={video} onLoadStart={event => event.currentTarget.classList.remove('is-ready')} onLoadedData={event => event.currentTarget.classList.add('is-ready')} onError={event => event.currentTarget.classList.remove('is-ready')} key={videoSource} className="hero-video" autoPlay muted loop playsInline preload="metadata" poster={heroMedia.poster ?? undefined} aria-hidden="true"><source src={videoSource} type="video/mp4" /></video>}
     <div data-parallax="4" className="hero-wash" />
     <div className="hero-heading"><p>TAKE YOUR BRAND EXPERIENCE FROM</p><h1 id="hero-heading"><span className="sr-only">Imagination to Activation</span><span className="headline-art"><Image src="/brand/headliner-transparent.png" alt="" width={937} height={322} loading="eager" sizes="(min-width: 1216px) 790px, (min-width: 768px) 65vw, 84vw" /></span></h1></div>
-    {!heroMedia.poster && !heroMedia.mobile && !heroMedia.desktop && <span className="asset-note hero-note">Cinematic video placeholder · footage to come</span>}
   </section>;
 }

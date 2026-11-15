@@ -19,6 +19,39 @@ let failed = false;
 let preference: Preference = null;
 let policy: AnalyticsPolicy = { defaultAllowed: false, reason: 'unknown', globalPrivacyControl: false };
 const listeners = new Set<() => void>();
+const handledLeads = new Set<string>();
+const pendingLeads = new Set<string>();
+const leadStorageKey = 'getup-handled-leads';
+
+function flushLeads() {
+  if (!state.allowed || !loaded || failed || hasGpc() || !window.gtag) return;
+  for (const receipt of pendingLeads) {
+    pendingLeads.delete(receipt);
+    // Deliberately omit the receipt, form fields, value, and user-provided data.
+    window.gtag('event', 'generate_lead', { send_to: id });
+  }
+}
+
+export function trackConfirmedLead(receipt: unknown) {
+  // Measurement must never interrupt a successful inquiry or its redirect.
+  try {
+    if (typeof receipt !== 'string' || !/^[a-f0-9-]{36}$/i.test(receipt)) return;
+    let saved: string[] = [];
+    try {
+      const value: unknown = JSON.parse(sessionStorage.getItem(leadStorageKey) || '[]');
+      if (Array.isArray(value)) saved = value.filter((item): item is string => typeof item === 'string');
+    } catch { /* In-memory duplicate protection remains available. */ }
+    if (handledLeads.has(receipt) || saved.includes(receipt)) return;
+    handledLeads.add(receipt);
+    preference = readPreference();
+    update();
+    // Never replay an inquiry submitted without permission after a later opt-in.
+    if (!state.allowed || failed || hasGpc()) return;
+    try { sessionStorage.setItem(leadStorageKey, JSON.stringify([...saved, receipt].slice(-100))); } catch { /* Optional storage. */ }
+    pendingLeads.add(receipt);
+    flushLeads();
+  } catch { /* Analytics is best-effort; form success is independent. */ }
+}
 
 declare global {
   interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void; }
@@ -35,6 +68,7 @@ function update() {
   const configured = Boolean(id && /^G-[A-Z0-9]+$/.test(id));
   const gpc = hasGpc();
   const allowed = configured && resolved && !gpc && preference !== 'denied' && (preference === 'granted' || policy.defaultAllowed);
+  if (!allowed) pendingLeads.clear();
   // Set synchronously, before rendering or queuing commands, including on opt-out.
   if (id) (window as unknown as Record<string, unknown>)[`ga-disable-${id}`] = !allowed;
   if (allowed && !state.allowed) {
@@ -68,8 +102,8 @@ export function setAnalyticsPreference(value: Exclude<Preference, null>) {
   try { localStorage.setItem(key, value); } catch { /* Keep a session choice if storage is unavailable. */ }
   update();
 }
-export function analyticsLoaded() { loaded = true; failed = false; update(); }
-export function analyticsFailed() { failed = true; update(); }
+export function analyticsLoaded() { loaded = true; failed = false; update(); flushLeads(); }
+export function analyticsFailed() { failed = true; pendingLeads.clear(); update(); }
 export function startAnalytics() {
   if (started) return;
   started = true;

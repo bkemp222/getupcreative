@@ -11,7 +11,7 @@ const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.Modu
 
 // Exercise the actual form submit handler without sending messages or altering the API.
 function formHarness({ status = 200, invalid = false, networkError = false } = {}) {
-  const calls = { requests: 0, resets: 0, focus: 0, routes: [], scroll: [], states: [] };
+  const calls = { requests: 0, resets: 0, focus: 0, routes: [], scroll: [], states: [], leads: [] };
   const exports = {};
   vm.runInNewContext(compiled, {
     exports,
@@ -20,6 +20,7 @@ function formHarness({ status = 200, invalid = false, networkError = false } = {
         useRef: current => ({ current }),
         useState: initial => [initial, next => calls.states.push(next)],
       };
+      if (name === '@/lib/analytics-client') return { trackConfirmedLead: receipt => calls.leads.push(receipt) };
       if (name === 'next/navigation') return { useRouter: () => ({ push: (...args) => calls.routes.push(args) }) };
       if (name === 'next/image') return { default: 'img' };
       return require(name);
@@ -29,7 +30,7 @@ function formHarness({ status = 200, invalid = false, networkError = false } = {
     async fetch() {
       calls.requests++;
       if (networkError) throw new Error('Offline');
-      return { ok: status >= 200 && status < 300, json: async () => ({ message: status === 200 ? 'Accepted' : 'Not sent' }) };
+      return { ok: status >= 200 && status < 300, json: async () => ({ message: status === 200 ? 'Accepted' : 'Not sent', receipt: '7cf78384-fbbe-4bd9-86e2-b5df9777b982' }) };
     },
   });
   const findForm = node => {
@@ -59,12 +60,14 @@ test('confirmed backend success redirects once and keeps submission locked durin
   assert.equal(calls.routes[0][1].scroll, false);
   assert.equal(calls.scroll[0].top, 0);
   assert.equal(calls.resets, 1);
+  assert.deepEqual(calls.leads, ['7cf78384-fbbe-4bd9-86e2-b5df9777b982']);
 });
 test('client validation focuses the invalid field without calling the backend or redirecting', async () => {
   const { calls, submit } = formHarness({ invalid: true });
   await submit();
   assert.equal(calls.requests, 0);
   assert.equal(calls.routes.length, 0);
+  assert.equal(calls.leads.length, 0);
   assert.equal(calls.focus, 1);
 });
 for (const status of [400, 503]) test(`backend ${status} preserves fields, reports failure and allows retry`, async () => {
@@ -72,6 +75,7 @@ for (const status of [400, 503]) test(`backend ${status} preserves fields, repor
   await submit(); await submit();
   assert.equal(calls.requests, 2);
   assert.equal(calls.routes.length, 0);
+  assert.equal(calls.leads.length, 0);
   assert.equal(calls.resets, 0);
   assert.ok(calls.states.includes('Not sent'));
 });
@@ -79,6 +83,7 @@ test('network failure never redirects or clears the form', async () => {
   const { calls, submit } = formHarness({ networkError: true });
   await submit();
   assert.equal(calls.routes.length, 0);
+  assert.equal(calls.leads.length, 0);
   assert.equal(calls.resets, 0);
   assert.ok(calls.states.some(value => typeof value === 'string' && value.includes('Unable to confirm your submission')));
 });

@@ -10,7 +10,7 @@ const display = localFont({ src: '../../public/fonts/Cinematografica-Heavy-trial
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(seoConfig.siteUrl ?? 'http://localhost:3000'),
+  metadataBase: new URL(seoConfig.siteUrl ?? 'https://getupcreative.com'),
   title: { default: site.name, template: `%s | ${site.name}` },
   description: site.description,
   robots: { index: seoConfig.indexable, follow: true },

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { randomUUID } from 'node:crypto';
 import { site } from '@/lib/site';
 export async function POST(request: Request) {
   if (Number(request.headers.get('content-length') || 0) > 16000) return NextResponse.json({ message: 'Message is too large.' }, { status: 413 });
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: `Your message could not be sent. Please try again or email ${site.email} directly.` }, { status: 502 });
     }
     // Provider acceptance is the confirmation required for the thank-you redirect.
-    return NextResponse.json({ message: 'Message received. Thank you for reaching out.' });
+    return NextResponse.json({ message: 'Message received. Thank you for reaching out.', receipt: randomUUID() });
   } catch {
     return NextResponse.json({ message: `We couldn't confirm your submission. Please email ${site.email} directly if this continues.` }, { status: 502 });
   }

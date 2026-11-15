@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
+import { randomUUID } from 'node:crypto';
 
 const source = await readFile(new URL('../src/app/api/contact/route.ts', import.meta.url), 'utf8');
 const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
@@ -13,6 +14,7 @@ function harness({ configured = true, accepted = true, result = { id: 'provider-
   vm.runInNewContext(compiled, {
     exports,
     require(name) {
+      if (name === 'node:crypto') return { randomUUID };
       if (name === 'next/server') return { NextResponse: Response };
       if (name === '@/lib/site') return { site: { email: 'brad@getupcreative.com' } };
       throw new Error(`Unexpected import ${name}`);
@@ -31,6 +33,7 @@ test('accepted mail goes only to Brad and replies to the visitor', async () => {
   const { calls, submit } = harness();
   const response = await submit({ ...inquiry, to: 'attacker@example.com', name: 'Website\nTest', message: '<b>A custom installation</b>' });
   assert.equal(response.status, 200);
+  assert.match((await response.json()).receipt, /^[a-f0-9-]{36}$/);
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, 'https://api.resend.com/emails');
   const payload = JSON.parse(calls[0].body);

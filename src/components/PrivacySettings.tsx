@@ -13,7 +13,7 @@ export function PrivacySettings() {
     : 'Analytics is off.';
   return <section id="privacy-settings" className={styles.settings} aria-labelledby="privacy-settings-heading">
     <h2 id="privacy-settings-heading">Privacy settings</h2>
-    <p>Google Analytics helps us understand website visits. It may be on by default in eligible U.S. regions; elsewhere, or when your region is uncertain, it waits for your permission. Advertising tracking stays off.</p>
+    <p>Google Analytics helps us understand website visits. It stays off until you allow it. Advertising measurement remains restricted; remarketing and personalized advertising stay off.</p>
     <p role="status" aria-live="polite">{status} {state.reason === 'gpc' ? 'Your browser’s Global Privacy Control signal is being respected.' : state.preference === 'denied' ? 'Your opt-out is saved.' : state.preference === 'granted' ? 'Your permission is saved.' : state.reason === 'us-default' ? 'The default for your region allows analytics.' : ''}</p>
     <div className={styles.actions}>
       <button type="button" aria-pressed={state.preference === 'denied'} onClick={() => setAnalyticsPreference('denied')}>Disable analytics</button>
