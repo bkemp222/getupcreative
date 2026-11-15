@@ -26,7 +26,7 @@ The production build uses Next.js's supported Webpack option because Turbopack's
 - `src/components/`: header/menu, hero, services, contact, client strip and footer.
 - `src/app/globals.css`: palette, type, mobile layout and desktop adaptation.
 - `src/lib/media.ts`: separate mobile/desktop video paths and poster configuration. The supplied getup_bgvideo.mp4 currently serves both layouts with muted, looping, inline autoplay. Reduced-motion users receive the poster or neutral background without downloading video.
-- `src/app/work/page.tsx`: minimal photo wall with six supplied photos and an expanding full-photo viewer.
+- `src/app/work/page.tsx`: minimal photo wall with twelve supplied photos and an expanding full-photo viewer.
 - `src/app/api/contact/route.ts`: validates input and explicitly returns 503 until an email provider is integrated. Messages are neither stored nor delivered.
 - `assets/`: untouched original graphics; copies are served from `public/brand/`.
 
@@ -53,7 +53,7 @@ Global tokens in `globals.css` set 180–220ms control responses, 500ms entrance
 
 The hanging menu retains native modal focus containment and Escape handling, returns focus to its trigger, and never delays link navigation. Reduced-motion changes immediately disable scroll reveals, parallax, logo motion and the marquee, finish modal transitions, and use the video poster instead of footage. The reduced-motion logo strip remains manually scrollable.
 
-Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards use the six supplied photos with optimized responsive images, small blur placeholders and the existing restrained reveal effect.
+Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards use the twelve supplied photos with optimized responsive images, small blur placeholders and the existing restrained reveal effect.
 
 Contact fields provide accessible inline errors, focus the first invalid field, preserve entered values after delivery failures, prevent duplicate submissions and show an immediate loading state. The backend still explicitly reports that email delivery is not configured.
 

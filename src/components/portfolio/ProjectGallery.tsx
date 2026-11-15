@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { flushSync } from 'react-dom';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Project } from '@/lib/gallery';
 
@@ -86,8 +87,9 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
       ], { duration: duration * (viewer.open ? .65 : .35), easing: 'ease', fill: 'both' });
       animation.finished.then(() => {
         if (!viewer.open) {
-          modal.close();
-          setViewer(null);
+          // Restore the thumbnail and remove the modal in the same commit.
+          // Closing the native dialog first leaves a frame with both images hidden.
+          flushSync(() => setViewer(null));
           tile?.focus({ preventScroll: true });
         }
       }).catch(() => {});
