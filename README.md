@@ -36,7 +36,7 @@ The headline file includes a baked-in supporting sentence and cream background. 
 - Approved Cinematografica webfont. The local preview uses a trial Heavy file found in the user's installed fonts. Replace the trial font before publication; it is not a production font asset. Inter is self-hosted via Fontsource.
 - Script artwork/font for “Got an idea?”; currently an italic Inter text placeholder.
 - Gold background pattern; currently flat gold. A dedicated video poster and optional separate mobile/desktop edits; the supplied background video is connected for both layouts.
-- Approved client logos, full-color project photography, titles, descriptions and gallery direction.
+- Full-color project photography, titles, descriptions and gallery direction. The supplied logo_scroll.svg is connected as a continuous, edge-faded marquee sized for approximately two to three visible logos, with pause on hover/focus and a manually scrollable reduced-motion layout.
 - Company email and social links. Address transcribed from the supplied reference.
 - Desktop composition review.
 - Email delivery provider, server-side rate limiting, robust spam protection and production delivery testing. Honeypot and validation are present, but do not constitute complete spam prevention.
