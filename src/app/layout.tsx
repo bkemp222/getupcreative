@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { AnalyticsConsent } from '@/components/AnalyticsConsent';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { Motion } from '@/components/Motion';
 import { site } from '@/lib/site';
@@ -17,5 +16,5 @@ export const metadata: Metadata = {
   robots: { index: seoConfig.indexable, follow: true },
 };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${inter.variable} ${display.variable}`}><body><a className="skip-link" href="#main">Skip to content</a>{children}<Motion /><GoogleAnalytics /><AnalyticsConsent /></body></html>;
+  return <html lang="en" className={`${inter.variable} ${display.variable}`}><body><a className="skip-link" href="#main">Skip to content</a>{children}<Motion /><GoogleAnalytics /></body></html>;
 }

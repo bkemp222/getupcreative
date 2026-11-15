@@ -1,0 +1,7 @@
+.settings { scroll-margin-top: 40px; border: 1px solid #f9f4e833; padding: clamp(20px, 4vw, 32px); border-radius: 14px; margin-top: 40px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.actions button { min-height: 44px; padding: 12px 18px; border: 1px solid var(--gold); border-radius: 24px; background: transparent; color: var(--cream); font: 600 13px/1.4 var(--font-body); }
+.actions button[aria-pressed='true'] { background: var(--gold); color: var(--charcoal); }
+.actions button:focus-visible { outline: 3px solid var(--cream); outline-offset: 4px; }
+.actions button:disabled { opacity: .5; cursor: wait; }
+.note { font-size: 13px; }

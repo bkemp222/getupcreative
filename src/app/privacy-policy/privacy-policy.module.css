@@ -1,0 +1,9 @@
+.page { background: var(--charcoal); color: var(--cream); padding: clamp(120px, 16vw, 190px) 24px 80px; }
+.content { max-width: 760px; margin: 0 auto; font: 400 16px/1.75 var(--font-body); }
+.content h1 { font-size: clamp(58px, 9vw, 96px); margin-bottom: 28px; }
+.content h1 span { color: var(--gold); }
+.content h2 { font: 600 20px/1.4 var(--font-body); margin: 32px 0 12px; }
+.content p { margin: 0 0 16px; }
+.content a { text-decoration: underline; text-underline-offset: 4px; }
+.content address { font-style: normal; }
+@media (max-width: 480px) { .page { padding-inline: 22px; } .content { font-size: 15px; } }

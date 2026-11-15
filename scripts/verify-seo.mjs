@@ -9,7 +9,7 @@ const decode = value => value.replace(/&amp;/g, '&').replace(/&quot;/g, '"').rep
 const attrs = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)="([^"]*)"/g)].map(([, key, value]) => [key, decode(value)]));
 const data = await readFile(new URL('../src/lib/gallery.ts', import.meta.url), 'utf8');
 const slugs = [...data.matchAll(/slug: '([^']+)'/g)].map(match => match[1]);
-const paths = ['/', '/work', ...slugs.map(slug => `/work/${slug}`)];
+const paths = ['/', '/work', '/privacy-policy', ...slugs.map(slug => `/work/${slug}`)];
 const titles = new Set();
 const descriptions = new Set();
 const internalLinks = new Set();
@@ -72,7 +72,7 @@ const sitemapResponse = await fetch(new URL('/sitemap.xml', base));
 assert.equal(sitemapResponse.status, 200);
 const sitemap = await sitemapResponse.text();
 const locations = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => decode(match[1]));
-assert.deepEqual(locations, indexable ? [new URL('/', origin).href, new URL('/work', origin).href] : []);
+assert.deepEqual(locations, indexable ? [new URL('/', origin).href, new URL('/work', origin).href, new URL('/privacy-policy', origin).href] : []);
 assert.ok(!sitemap.includes('/api/'));
 if (indexable) assert.ok(robots.includes(`${origin}/sitemap.xml`));
 else assert.ok(!robots.includes('Sitemap:'));

@@ -1,8 +1,0 @@
-.banner { position: fixed; z-index: 90; right: 20px; bottom: 20px; left: 20px; max-width: 720px; margin-left: auto; padding: 20px; background: var(--cream); color: var(--charcoal); border: 1px solid #28282730; border-radius: 16px; box-shadow: 0 8px 32px #0002; }
-.banner h2 { font: 700 15px/1.4 var(--font-body); margin: 0 0 6px; }
-.banner p { font: 400 12px/1.6 var(--font-body); margin: 0; }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.actions button { flex: 1; min-height: 44px; padding: 10px 16px; border: 1px solid var(--charcoal); border-radius: 24px; background: var(--charcoal); color: var(--cream); font: 600 12px/1.4 var(--font-body); }
-.preferences { position: fixed; z-index: 40; bottom: 10px; left: 12px; min-height: 44px; padding: 10px 12px; background: var(--cream); color: var(--charcoal); border: 1px solid #28282740; border-radius: 8px; font: 500 11px/1.4 var(--font-body); }
-.actions button:focus-visible, .preferences:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-@media (max-width: 480px) { .banner { left: 12px; right: 12px; bottom: 12px; padding: 16px; } }

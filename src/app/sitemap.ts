@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: canonicalUrl('/')! },
     { url: canonicalUrl('/work')! },
+    { url: canonicalUrl('/privacy-policy')! },
     ...projects.filter(isPublishedProject).map(project => ({
       url: canonicalUrl(`/work/${project.slug}`)!,
       ...(project.updatedAt ? { lastModified: project.updatedAt } : {}),
