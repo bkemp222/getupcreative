@@ -155,3 +155,12 @@
   .wall-heading { padding-bottom: 20px; }
 }
 @media (prefers-reduced-motion: reduce) { .photo-tile img { transform: none !important; } .photo-viewer::backdrop { animation: none; } }
+
+.gallery-home { display: flex; justify-content: center; margin: 36px auto 0; }
+.gallery-home-button { display: inline-flex; align-items: center; gap: 14px; min-height: 48px; padding: 12px 24px; border-radius: 999px; background: var(--gold); color: var(--charcoal); font-size: 28px; transition: transform var(--motion-control) var(--ease-control), box-shadow var(--motion-control) var(--ease-control); }
+.gallery-home-button > span:first-child { font-family: var(--font-body); font-size: 22px; }
+.gallery-home-button > span:last-child { position: relative; top: .07em; }
+.gallery-home-button:focus-visible { outline: 2px solid var(--cream); outline-offset: 5px; }
+@media (hover: hover) and (pointer: fine) { .gallery-home-button:hover { transform: translateY(-2px); box-shadow: 0 4px 0 #111; } }
+.gallery-home-button:active { transform: translateY(0); box-shadow: none; }
+@media (prefers-reduced-motion: reduce) { .gallery-home-button { transform: none !important; transition: none; } }

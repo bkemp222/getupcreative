@@ -67,13 +67,13 @@ The wall uses optimized Next.js images and intrinsic dimensions, tight mobile pa
 
 ## Tiger background artwork
 
-Only What We Do uses `AnimatedTigerBackground`. `assets/tigerstripes.svg` is authoritative and remains untouched. `scripts/sync-tiger-art.mjs` copies its 40 exact path strings and 1920×1920 viewBox into `src/lib/tiger-art.ts` before development/build. Run `node scripts/sync-tiger-art.mjs` after replacing artwork while the dev server is already running. The adapter deliberately fails on an unexpected SVG structure so transforms or additional elements cannot be silently lost.
+What We Do, the shared header, and the client-logo section use `AnimatedTigerBackground` at 17% opacity. `assets/tigerstripes.svg` is authoritative and remains untouched. `scripts/sync-tiger-art.mjs` copies its 40 exact path strings and 1920×1920 viewBox into `src/lib/tiger-art.ts` before development/build. Run `node scripts/sync-tiger-art.mjs` after replacing artwork while the dev server is already running. The adapter deliberately fails on an unexpected SVG structure so transforms or additional elements cannot be silently lost.
 
 Configure the component in `src/components/WhatWeDo.tsx`:
 
 ```tsx
 <AnimatedTigerBackground
-  stripeOpacity={0.2}
+  stripeOpacity={0.17}
   stripeColor="#bd710a"
   patternScale={1}
   distortionStrength={8}
@@ -85,4 +85,4 @@ Configure the component in `src/components/WhatWeDo.tsx`:
 
 Opacity ranges from 0 to 1. Scale 1 proportionally covers the section; larger values zoom in without stretching. Distortion is in artwork units (clamped 0–16); 0 removes the filter. Speed props are durations in seconds, so higher values move more slowly. Density is no longer configurable because the supplied artwork determines the composition.
 
-Desktop uses an inline SVG displacement filter with one fixed turbulence octave, a slowly offset noise field, and gently varying displacement strength. Touch/narrow screens omit the filter and use compositor-friendly drift only. Reduced motion and `animated={false}` show static, undistorted artwork. Offscreen/hidden-tab motion pauses. The decorative layer clips independently of the gnome and does not change layout or the underlying gold color. Header and client backgrounds remain unchanged.
+Desktop uses an inline SVG displacement filter with one fixed turbulence octave, a slowly offset noise field, and gently varying displacement strength. Touch/narrow screens omit the filter and use compositor-friendly drift only. Reduced motion and `animated={false}` show static, undistorted artwork. Offscreen/hidden-tab motion pauses. The decorative layer clips independently of the gnome and does not change layout or the underlying gold color. The header uses 43-second drift without displacement; the client section uses 41-second drift and gentle 4-unit displacement.

@@ -16,7 +16,7 @@ type Props = {
 };
 
 export function AnimatedTigerBackground({
-  stripeOpacity = .2, stripeColor = '#bd710a', patternScale = 1,
+  stripeOpacity = .17, stripeColor = '#bd710a', patternScale = 1,
   driftSpeed = 38, morphSpeed = 36,
   distortionStrength = 8, animated = true,
 }: Props) {

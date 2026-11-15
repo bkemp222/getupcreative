@@ -3,7 +3,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: var(--tiger-opacity, .2);
+  opacity: var(--tiger-opacity, .17);
   contain: paint;
 }
 .surface {

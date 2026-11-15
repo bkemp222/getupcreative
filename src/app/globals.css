@@ -87,7 +87,7 @@ textarea { resize: vertical; min-height: 95px; }
 .form-status { font-size: 12px; line-height: 1.5; margin-top: 12px; }
 .form-status:empty { display: none; }
 .honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.clients { background: var(--gold); padding: 5vw 0 4vw; text-align: center; border-bottom: 8px solid var(--charcoal); }
+.clients { position: relative; background: var(--gold); padding: 5vw 0 4vw; text-align: center; border-bottom: 8px solid var(--charcoal); }
 .clients h2 { font-size: 9vw; margin-bottom: 5vw; }
 /* Each equal-width group includes its trailing gap, so -50% loops without a jump. */
 .logo-strip { overflow: hidden; width: 100%; mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent); }
@@ -294,3 +294,5 @@ html { scroll-padding-top: var(--anchor-offset); }
 
 .what-we-do > [data-tiger-background] { left: 38px; }
 @media (min-width: 768px) { .what-we-do > [data-tiger-background] { left: 0; } }
+
+.clients > h2, .clients > .logo-strip { position: relative; }

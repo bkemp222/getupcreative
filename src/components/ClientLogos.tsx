@@ -1,9 +1,11 @@
 import Image from 'next/image';
+import { AnimatedTigerBackground } from './AnimatedTigerBackground';
 
 const brands = 'Disney, ESPN, Epic Games, Don Julio, Crown Royal, Waze, SheaMoisture, Capital One, Jameson, Casamigos, Shrimp Car Company, Guinness, Ketel One, Johnnie Walker, Tanqueray, Smirnoff, Bulleit Bourbon, and Captain Morgan';
 
 export function ClientLogos() {
   return <section className="clients" aria-labelledby="clients-heading">
+    <AnimatedTigerBackground driftSpeed={41} morphSpeed={39} patternScale={1.05} distortionStrength={4} />
     <h2 data-reveal id="clients-heading" className="display">Brands We’ve Built With</h2>
     <div className="logo-strip" role="region" aria-label="Client logos; scroll horizontally when reduced motion is enabled" tabIndex={0}>
       <div className="logo-track">
