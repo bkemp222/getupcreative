@@ -26,7 +26,7 @@ The production build uses Next.js's supported Webpack option because Turbopack's
 - `src/components/`: header/menu, hero, services, contact, client strip and footer.
 - `src/app/globals.css`: palette, type, mobile layout and desktop adaptation.
 - `src/lib/media.ts`: separate mobile/desktop video paths and poster configuration. The supplied getup_bgvideo.mp4 currently serves both layouts with muted, looping, inline autoplay. Reduced-motion users receive the poster or neutral background without downloading video.
-- `src/app/work/page.tsx`: placeholder portfolio gallery. No invented projects or clients.
+- `src/app/work/page.tsx`: editorial gallery with three supplied photos and numbered placeholders for unconfirmed project titles.
 - `src/app/api/contact/route.ts`: validates input and explicitly returns 503 until an email provider is integrated. Messages are neither stored nor delivered.
 - `assets/`: untouched original graphics; copies are served from `public/brand/`.
 
@@ -36,7 +36,7 @@ The headline uses the supplied transparent 937 × 322 artwork at its original as
 
 - Approved Cinematografica webfont. The local preview uses a trial Heavy file found in the user's installed fonts. Replace the trial font before publication; it is not a production font asset. Inter is self-hosted via Fontsource.
 - Gold background pattern; currently flat gold. Optional separate mobile/desktop edits; the supplied video serves both layouts, with a still poster extracted from its first frame.
-- Full-color project photography, titles, descriptions and gallery direction. The supplied logo_scroll.svg is connected as a continuous, edge-faded marquee sized for approximately two to three visible logos, with pause on hover/focus and a manually scrollable reduced-motion layout.
+- Approved project titles, descriptions, additional photography and final gallery direction. Three supplied photos are now connected through `src/lib/gallery.ts`. The supplied logo_scroll.svg is connected as a continuous, edge-faded marquee sized for approximately two to three visible logos, with pause on hover/focus and a manually scrollable reduced-motion layout.
 - Company email and social links. Address transcribed from the supplied reference.
 - Desktop composition review.
 - Email delivery provider, server-side rate limiting, robust spam protection and production delivery testing. Honeypot and validation are present, but do not constitute complete spam prevention.
@@ -53,6 +53,14 @@ Global tokens in `globals.css` set 180–220ms control responses, 500ms entrance
 
 The hanging menu retains native modal focus containment and Escape handling, returns focus to its trigger, and never delays link navigation. Reduced-motion changes immediately disable scroll reveals, parallax, logo motion and the marquee, finish modal transitions, and use the video poster instead of footage. The reduced-motion logo strip remains manually scrollable.
 
-Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards have a restrained reveal layer ready for actual project images; no project photography has been invented.
+Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards use the three supplied photos with optimized responsive images, small blur placeholders and the existing restrained reveal effect.
 
 Contact fields provide accessible inline errors, focus the first invalid field, preserve entered values after delivery failures, prevent duplicate submissions and show an immediate loading state. The backend still explicitly reports that email delivery is not configured.
+
+## Editorial portfolio
+
+`src/lib/gallery.ts` is the project source of truth. Add approved titles, categories, client/location/year, descriptions, and imported photographs there. Null fields display clearly labeled placeholders. Categories appear as filters only when at least two actual categories exist. Supported compositions are `cinematic`, `wide`, `portrait`, `portrait-pair`, and `feature`; their placement is defined in the route-scoped `src/app/work/portfolio.css`.
+
+Each project has a static `/work/[slug]` page using `ProjectDetail`. Its `photos` array accepts `full` and `detail` layouts with descriptive alt text and optional captions. Until additional photos are provided, outlined placeholders indicate the intended sequence; supplied cover photographs are never duplicated to fabricate additional content. Static image imports provide dimensions and blur placeholders for optimized Next.js images.
+
+Gallery reveals and hover transitions reuse the global motion tokens. Category filtering progressively enhances with native View Transitions when supported and respects reduced motion. Case-study reading progress uses a passive, animation-frame-batched scroll listener. No animation library is added.

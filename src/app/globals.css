@@ -114,10 +114,8 @@ textarea { resize: vertical; min-height: 95px; }
 .portfolio-intro { max-width: 600px; line-height: 1.5; font-size: 20px; }
 .portfolio-note { color: #c7c2b8; font-size: 12px; margin-top: 20px; }
 .project-grid { display: grid; gap: 24px; margin: 40px 0; }
-.project-placeholder > div { aspect-ratio: 4 / 3; border: 1px dashed #f9f4e850; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; background: #323230; }
-.project-placeholder > div > span { color: var(--gold); font-weight: 800; }
-.project-placeholder p { font-size: 12px; letter-spacing: .1em; line-height: 1.6; }
-.project-placeholder h2 { margin-top: 12px; font-size: 14px; font-weight: 500; }
+.project-card .project-media { aspect-ratio: 4 / 3; background: #323230; }
+.project-card h2 { margin-top: 12px; font-size: 14px; font-weight: 500; }
 .portfolio .work-button { background: var(--gold); color: var(--charcoal); font-size: 14px; }
 @media (min-width: 768px) {
   .site-header { height: 100px; }
@@ -227,7 +225,7 @@ html { scroll-padding-top: var(--anchor-offset); }
   .menu-tab:hover { transform: translateY(3px); }
   .menu-content nav a:hover { transform: translateX(4px); text-decoration-color: var(--gold); }
   .footer nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .project-placeholder:hover .project-media img { transform: scale(1.015); }
+  .project-card:hover .project-media img { transform: scale(1.015); }
 }
 @media (min-width: 768px) { .menu-close.menu-tab { right: 6%; } }
 @media (prefers-reduced-motion: reduce) {
