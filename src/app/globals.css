@@ -261,3 +261,36 @@ html { scroll-padding-top: var(--anchor-offset); }
 @media (prefers-reduced-motion: reduce) {
   .work-button-machine, .work-button-machine .work-button-icon svg { transform: none !important; transition: none !important; }
 }
+
+@keyframes work-button-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.06; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .work-button-machine { position: relative; isolation: isolate; animation: work-button-breathe 2.6s cubic-bezier(.45, 0, .55, 1) infinite; transform-origin: center; }
+  .work-button-machine:focus-visible, .work-button-machine:active { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .work-button-machine:hover { animation-play-state: paused; }
+}
+
+@keyframes work-button-energy {
+  0%, 15% { transform: scale(1); opacity: 0; }
+  35% { opacity: .75; }
+  85%, 100% { transform: scale(1.13, 1.4); opacity: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .work-button-machine::before {
+    content: ''; position: absolute; inset: -4px; border: 2px solid var(--gold);
+    border-radius: inherit; box-shadow: 0 0 0 1px #f9f4e899, 0 0 14px #fff0ba66;
+    pointer-events: none; z-index: -1; opacity: 0;
+    animation: work-button-energy 2.6s cubic-bezier(.2, .65, .3, 1) infinite;
+  }
+  .work-button-machine:focus-visible::before, .work-button-machine:active::before { animation-play-state: paused; visibility: hidden; }
+}
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+  .work-button-machine:hover::before { animation-play-state: paused; visibility: hidden; }
+}
+
+.what-we-do > [data-tiger-background] { left: 38px; }
+@media (min-width: 768px) { .what-we-do > [data-tiger-background] { left: 0; } }

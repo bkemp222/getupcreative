@@ -1,0 +1,28 @@
+.background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--tiger-opacity, .2);
+  contain: paint;
+}
+.surface {
+  position: absolute;
+  left: -40px;
+  top: -40px;
+  width: calc(100% + 80px);
+  height: calc(100% + 80px);
+  transform-origin: center;
+  scale: var(--tiger-scale, 1);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .surface {
+    animation: drift var(--tiger-drift, 38s) ease-in-out infinite;
+    animation-play-state: paused;
+  }
+  .background[data-running='true'] .surface { animation-play-state: running; }
+}
+@keyframes drift {
+  0%, 100% { translate: -10px -5px; }
+  50% { translate: 10px 5px; }
+}
