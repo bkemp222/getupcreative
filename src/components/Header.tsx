@@ -55,7 +55,7 @@ export function Header() {
     <dialog id="site-menu" ref={dialog} className="menu-dialog" data-state={open ? 'open' : 'closing'} aria-label="Main navigation" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className="menu-content">
         <button type="button" className="menu-tab menu-close" onClick={close} aria-label="Close navigation"><span /><span /><span /></button>
-        <div className="menu-masthead"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} sizes="130px" /><span aria-hidden="true" /></div>
+        <div className="menu-masthead"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} sizes="130px" /></div>
         <nav aria-label="Main navigation">{navigation.map(item => <Link key={item.number} onClick={navigate} href={item.href}>
           <span className="menu-index" aria-hidden="true">{item.number}</span>
           <span className="menu-label display">{item.label}</span>

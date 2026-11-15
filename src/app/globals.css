@@ -302,7 +302,6 @@ html { scroll-padding-top: var(--anchor-offset); }
 .menu-content { position: relative; width: min(100%, 900px); min-height: calc(100svh - 4px); padding: clamp(80px, 10vh, 120px) 48px 48px; display: flex; flex-direction: column; justify-content: center; }
 .menu-masthead { display: flex; align-items: center; gap: 28px; margin-bottom: 28px; }
 .menu-masthead img { width: 130px; height: auto; }
-.menu-masthead > span { height: 1px; flex: 1; background: #ffa31355; }
 .menu-content nav { display: flex; flex-direction: column; gap: 0; margin: 0; font-size: inherit; font-weight: inherit; letter-spacing: normal; }
 .menu-content nav a { width: 100%; display: grid; grid-template-columns: 40px 1fr 28px; align-items: center; gap: 20px; min-height: 96px; padding: 19px 2px; border-top: 1px solid #f9f4e82b; text-decoration: none; }
 .menu-content nav a:last-child { border-bottom: 1px solid #f9f4e82b; }
