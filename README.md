@@ -26,7 +26,7 @@ The production build uses Next.js's supported Webpack option because Turbopack's
 - `src/components/`: header/menu, hero, services, contact, client strip and footer.
 - `src/app/globals.css`: palette, type, mobile layout and desktop adaptation.
 - `src/lib/media.ts`: separate mobile/desktop video paths and poster configuration. The supplied getup_bgvideo.mp4 currently serves both layouts with muted, looping, inline autoplay. Reduced-motion users receive the poster or neutral background without downloading video.
-- `src/app/work/page.tsx`: editorial gallery with three supplied photos and numbered placeholders for unconfirmed project titles.
+- `src/app/work/page.tsx`: minimal photo wall with three supplied photos and an expanding full-photo viewer.
 - `src/app/api/contact/route.ts`: validates input and explicitly returns 503 until an email provider is integrated. Messages are neither stored nor delivered.
 - `assets/`: untouched original graphics; copies are served from `public/brand/`.
 
@@ -57,10 +57,10 @@ Inter and the existing Cinematografica preview font are preloaded with next/font
 
 Contact fields provide accessible inline errors, focus the first invalid field, preserve entered values after delivery failures, prevent duplicate submissions and show an immediate loading state. The backend still explicitly reports that email delivery is not configured.
 
-## Editorial portfolio
+## Photo wall
 
-`src/lib/gallery.ts` is the project source of truth. Add approved titles, categories, client/location/year, descriptions, and imported photographs there. Null fields display clearly labeled placeholders. Categories appear as filters only when at least two actual categories exist. Supported compositions are `cinematic`, `wide`, `portrait`, `portrait-pair`, and `feature`; their placement is defined in the route-scoped `src/app/work/portfolio.css`.
+`src/lib/gallery.ts` holds the supplied photography. The `/work` page now displays a tight, repeating mosaic with varied crop sizes and no project captions. Add photos to that data array to extend the wall. Existing case-study templates remain available at their routes for future use, but wall tiles open the full photograph in place.
 
-Each project has a static `/work/[slug]` page using `ProjectDetail`. Its `photos` array accepts `full` and `detail` layouts with descriptive alt text and optional captions. Until additional photos are provided, outlined placeholders indicate the intended sequence; supplied cover photographs are never duplicated to fabricate additional content. Static image imports provide dimensions and blur placeholders for optimized Next.js images.
+`ProjectGallery` uses a native modal dialog with keyboard focus containment and a 500ms crop/transform animation. Clicking outside, the close button, Escape, or browser Back collapses the photograph to its original tile. Forward reopens it. A `#photo=project-slug` hash supports direct links; scroll position stays fixed while viewing. Reduced motion skips the expansion animation. No animation library is used.
 
-Gallery reveals and hover transitions reuse the global motion tokens. Category filtering progressively enhances with native View Transitions when supported and respects reduced motion. Case-study reading progress uses a passive, animation-frame-batched scroll listener. No animation library is added.
+The wall uses optimized Next.js images and intrinsic dimensions, tight mobile pairings, and subtle hover scaling. Shared homepage, header, footer, and navigation remain unchanged.
