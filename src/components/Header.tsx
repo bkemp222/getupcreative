@@ -56,7 +56,12 @@ export function Header() {
       <div className="menu-content">
         <button type="button" className="menu-tab menu-close" onClick={close} aria-label="Close navigation"><span /><span /><span /></button>
         <div className="menu-masthead"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} sizes="130px" /></div>
-        <nav aria-label="Main navigation">{navigation.map(item => <Link key={item.number} onClick={navigate} href={item.href}>
+        <nav aria-label="Main navigation">{navigation.map(item => <Link key={item.number} onClick={navigate} href={item.href}
+          scroll={item.href === '/work' ? false : undefined}
+          onNavigate={() => {
+            // Next's automatic scroll target can skip the short header and crop its logo.
+            if (item.href === '/work') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          }}>
           <span className="menu-index" aria-hidden="true">{item.number}</span>
           <span className="menu-label display">{item.label}</span>
           <svg className="menu-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>
