@@ -52,7 +52,7 @@ h1, h2, p { margin: 0; }
 .asset-note { font-size: 9px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 .hero-note { position: absolute; bottom: 22px; left: 15px; right: 15px; text-align: center; color: #353533; }
 .what-we-do { position: relative; border-top: 8px solid var(--charcoal); }
-.what-we-do::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8%; background: var(--charcoal); }
+.what-we-do::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 38px; background: var(--charcoal); }
 .what-inner { position: relative; min-height: 89vw; max-width: 1200px; margin: auto; padding: 4.8vw 4vw 5vw 20%; }
 .vertical-banner { position: absolute; left: 0; top: 0; width: 16%; height: 59%; background: var(--charcoal); color: var(--cream); display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 13.5vw; letter-spacing: 0; padding-top: 16px; clip-path: polygon(0 9%, 100% 0, 100% 100%, 0 100%); white-space: nowrap; }
 .what-copy { position: relative; z-index: 2; }
