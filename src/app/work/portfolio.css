@@ -120,6 +120,8 @@
   .work-intro-line > p { font-size: 11px; line-height: 1.6; }
 }
 
+:root { --photo-open: 720ms; --photo-close: 580ms; --photo-ease: cubic-bezier(.22, .1, .18, 1); }
+
 /* A tightly composed photo wall; captions stay out of the photography. */
 .editorial-portfolio { padding-bottom: clamp(24px, 4vw, 64px); }
 .wall-heading, .photo-wall { max-width: 1472px; margin-inline: auto; }
@@ -136,14 +138,13 @@
 .photo-tile:focus-visible { outline-offset: -4px; outline: 3px solid var(--gold); z-index: 1; }
 .photo-tile:focus-visible .tile-expand { opacity: 1; transform: none; }
 .photo-viewer { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: hidden; }
-.photo-viewer::backdrop { background: #141413f2; animation: photo-shade-in var(--motion-enter) var(--ease-enter) both; }
-.photo-viewer[data-open='false']::backdrop { animation: photo-shade-out var(--motion-enter) var(--ease-enter) both; }
+.photo-viewer::backdrop { background: transparent; }
+.photo-shade { position: fixed; inset: 0; background: #10100ff5; opacity: 0; pointer-events: none; }
+.photo-tile[data-viewing='true'] img, .photo-tile[data-viewing='true'] .tile-expand { visibility: hidden; }
 .expanded-photo { position: fixed; transform-origin: top left; will-change: transform, clip-path; }
 .expanded-photo img { width: 100%; height: 100%; object-fit: contain; }
 .photo-close { position: fixed; right: 16px; top: 14px; width: 48px; height: 48px; border: 1px solid #f9f4e840; border-radius: 50%; background: #282827; color: var(--cream); font-size: 30px; line-height: 1; transition: color var(--motion-control), border-color var(--motion-control); }
 .photo-close:hover { border-color: var(--gold); color: var(--gold); }
-@keyframes photo-shade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes photo-shade-out { from { opacity: 1; } to { opacity: 0; } }
 @media (hover: hover) and (pointer: fine) { .photo-tile:hover img { transform: scale(1.025); } .photo-tile:hover .tile-expand { opacity: 1; transform: none; } }
 @media (max-width: 767px) {
   .photo-wall { gap: 7px; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: clamp(110px, 28vw, 210px); }

@@ -2,6 +2,9 @@ import type { StaticImageData } from 'next/image';
 import fortnite from '../../assets/gallery/01_fortnite.jpg';
 import crownAtl from '../../assets/gallery/02_crownatl.jpg';
 import mickey from '../../assets/gallery/03_mickey.jpg';
+import crownBoombox from '../../assets/gallery/04_crownboombox.jpg';
+import donJulio from '../../assets/gallery/05_donjulioshaky.jpg';
+import bulleit from '../../assets/gallery/06_bulleitbbq.jpg';
 
 export type Composition = 'cinematic' | 'wide' | 'portrait' | 'portrait-pair' | 'feature';
 export type ProjectPhoto = { image: StaticImageData; alt: string; caption?: string; layout: 'full' | 'detail' };
@@ -38,6 +41,21 @@ export const projects: Project[] = [
     slug: 'project-03', number: '03', title: null, category: null, client: null, location: null, year: null, description: null,
     cover: mickey, alt: 'Mickey Mouse silhouette in greenery on an orange paneled wall beside a matching lounge sofa.',
     composition: 'portrait', position: '53% 50%', photos: [],
+  },
+  {
+    slug: 'project-04', number: '04', title: null, category: null, client: null, location: null, year: null, description: null,
+    cover: crownBoombox, alt: 'Oversized Crown Royal boombox with illuminated speakers, a cassette, and purple and gold controls.',
+    composition: 'portrait', position: '65% 50%', photos: [],
+  },
+  {
+    slug: 'project-05', number: '05', title: null, category: null, client: null, location: null, year: null, description: null,
+    cover: donJulio, alt: 'Don Julio pavilion at night with illuminated sculptural arches and signage.',
+    composition: 'wide', position: '50% 30%', photos: [],
+  },
+  {
+    slug: 'project-06', number: '06', title: null, category: null, client: null, location: null, year: null, description: null,
+    cover: bulleit, alt: 'Orange Bulleit bourbon installation with illuminated lettering, a barbecue station, and a bar.',
+    composition: 'wide', position: '50% 25%', photos: [],
   },
 ];
 

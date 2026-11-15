@@ -26,7 +26,7 @@ The production build uses Next.js's supported Webpack option because Turbopack's
 - `src/components/`: header/menu, hero, services, contact, client strip and footer.
 - `src/app/globals.css`: palette, type, mobile layout and desktop adaptation.
 - `src/lib/media.ts`: separate mobile/desktop video paths and poster configuration. The supplied getup_bgvideo.mp4 currently serves both layouts with muted, looping, inline autoplay. Reduced-motion users receive the poster or neutral background without downloading video.
-- `src/app/work/page.tsx`: minimal photo wall with three supplied photos and an expanding full-photo viewer.
+- `src/app/work/page.tsx`: minimal photo wall with six supplied photos and an expanding full-photo viewer.
 - `src/app/api/contact/route.ts`: validates input and explicitly returns 503 until an email provider is integrated. Messages are neither stored nor delivered.
 - `assets/`: untouched original graphics; copies are served from `public/brand/`.
 
@@ -53,7 +53,7 @@ Global tokens in `globals.css` set 180–220ms control responses, 500ms entrance
 
 The hanging menu retains native modal focus containment and Escape handling, returns focus to its trigger, and never delays link navigation. Reduced-motion changes immediately disable scroll reveals, parallax, logo motion and the marquee, finish modal transitions, and use the video poster instead of footage. The reduced-motion logo strip remains manually scrollable.
 
-Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards use the three supplied photos with optimized responsive images, small blur placeholders and the existing restrained reveal effect.
+Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards use the six supplied photos with optimized responsive images, small blur placeholders and the existing restrained reveal effect.
 
 Contact fields provide accessible inline errors, focus the first invalid field, preserve entered values after delivery failures, prevent duplicate submissions and show an immediate loading state. The backend still explicitly reports that email delivery is not configured.
 
@@ -61,6 +61,6 @@ Contact fields provide accessible inline errors, focus the first invalid field, 
 
 `src/lib/gallery.ts` holds the supplied photography. The `/work` page now displays a tight, repeating mosaic with varied crop sizes and no project captions. Add photos to that data array to extend the wall. Existing case-study templates remain available at their routes for future use, but wall tiles open the full photograph in place.
 
-`ProjectGallery` uses a native modal dialog with keyboard focus containment and a 500ms crop/transform animation. Clicking outside, the close button, Escape, or browser Back collapses the photograph to its original tile. Forward reopens it. A `#photo=project-slug` hash supports direct links; scroll position stays fixed while viewing. Reduced motion skips the expansion animation. No animation library is used.
+`ProjectGallery` uses a native modal dialog with keyboard focus containment and a coordinated 720ms opening and 580ms closing crop/transform animation with a synchronized dark scrim and interruption-safe reversal. Clicking outside, the close button, Escape, or browser Back collapses the photograph to its original tile. Forward reopens it. A `#photo=project-slug` hash supports direct links; scroll position stays fixed while viewing. Reduced motion skips the expansion animation. No animation library is used.
 
 The wall uses optimized Next.js images and intrinsic dimensions, tight mobile pairings, and subtle hover scaling. Shared homepage, header, footer, and navigation remain unchanged.
