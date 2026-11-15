@@ -7,7 +7,7 @@ export function ProjectDetail({ project, next }: { project: Project; next: Proje
   return <main id="main" className="case-study" data-case-study>
     <ReadingProgress />
     <header className="case-heading"><Link className="case-back" href="/work">← All work</Link><p className="case-index">PROJECT / {project.number}</p><h1 className="display">{project.title ?? <>Project <span className="case-number">{project.number}</span></>}<span className="work-period">.</span></h1>{!project.title && <p className="pending-copy">Project title pending</p>}</header>
-    <figure className="case-hero"><Image src={project.cover} alt={project.alt} priority placeholder="blur" sizes="(min-width: 1600px) 1472px, 94vw" /><figcaption><span>01 / PROJECT PHOTOGRAPHY</span><span>GET UP CREATIVE</span></figcaption></figure>
+    <figure className="case-hero"><Image src={project.cover} alt={project.alt} preload placeholder="blur" sizes="(min-width: 1600px) 1472px, 94vw" /><figcaption><span>01 / PROJECT PHOTOGRAPHY</span><span>GET UP CREATIVE</span></figcaption></figure>
     <section className="case-info" aria-labelledby="project-overview" data-reveal>
       <div><h2 id="project-overview" className="eyebrow">THE PROJECT</h2><p className={`case-description${project.description ? '' : ' pending-copy'}`}>{project.description ?? 'Project description to come. This space will introduce the brief, the build, and the finished experience.'}</p></div>
       <dl>{[['Client', project.client], ['Category', project.category], ['Location', project.location], ['Year', project.year]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd className={value ? '' : 'pending-copy'}>{value ?? 'To be supplied'}</dd></div>)}</dl>

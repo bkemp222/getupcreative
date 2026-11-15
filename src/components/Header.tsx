@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { AnimatedTigerBackground } from './AnimatedTigerBackground';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { site } from '@/lib/site';
 
 const navigation = [
   { number: '01', label: 'Home', href: '/' },
@@ -49,7 +50,7 @@ export function Header() {
   return <>
     <header className="site-header gold-panel">
       <AnimatedTigerBackground driftSpeed={43} patternScale={1.1} distortionStrength={0} />
-      <Link className="header-logo" href="/" aria-label="Get Up Creative home"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} priority sizes="(min-width: 768px) 290px, 55vw" /></Link>
+      <Link className="header-logo" href="/" aria-label="Get Up Creative home"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} loading="eager" fetchPriority="high" sizes="(min-width: 768px) 290px, 55vw" /></Link>
       <button ref={trigger} className="menu-tab" type="button" aria-label="Open navigation" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen(true)}><span /><span /><span /></button>
     </header>
     <dialog id="site-menu" ref={dialog} className="menu-dialog" data-state={open ? 'open' : 'closing'} aria-label="Main navigation" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
@@ -57,10 +58,10 @@ export function Header() {
         <button type="button" className="menu-tab menu-close" onClick={close} aria-label="Close navigation"><span /><span /><span /></button>
         <div className="menu-masthead"><Image src="/brand/getup_logo.png" alt="Get Up Creative Co." width={861} height={503} sizes="130px" /></div>
         <nav aria-label="Main navigation">{navigation.map(item => <Link key={item.number} onClick={navigate} href={item.href}
-          scroll={item.href === '/work' ? false : undefined}
+          scroll={item.href === '/work' || item.href === '/' ? false : undefined}
           onNavigate={() => {
             // Next's automatic scroll target can skip the short header and crop its logo.
-            if (item.href === '/work') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            if (item.href === '/work' || item.href === '/') window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
           }}>
           <span className="menu-index" aria-hidden="true">{item.number}</span>
           <span className="menu-label display">{item.label}</span>
@@ -68,8 +69,8 @@ export function Header() {
         </Link>)}</nav>
         <div className="menu-information">
           <div className="menu-contact-links">
-            <div><p className="menu-info-label">EMAIL</p><a href="mailto:brad@getupcreative.com">brad@getupcreative.com</a></div>
-            <div><p className="menu-info-label">INSTAGRAM</p><a href="https://www.instagram.com/getupcreativeco/" target="_blank" rel="noopener noreferrer" aria-label="@getupcreativeco on Instagram (opens in a new tab)">@getupcreativeco</a></div>
+            <div><p className="menu-info-label">EMAIL</p><a href={`mailto:${site.email}`}>{site.email}</a></div>
+            <div><p className="menu-info-label">INSTAGRAM</p><a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="@getupcreativeco on Instagram (opens in a new tab)">@getupcreativeco</a></div>
           </div>
           <div><p className="menu-info-label">LOCATION</p><p>Atlanta, Georgia</p></div>
           <div><p className="menu-info-label">STUDIO</p><address>40 Industrial Connector, Suite D<br />Dallas, GA 30132</address></div>

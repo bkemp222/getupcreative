@@ -1,8 +1,8 @@
 'use client';
 import Image from 'next/image';
 import { flushSync } from 'react-dom';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { Project } from '@/lib/gallery';
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from 'react';
+import { isPublishedProject, type Project } from '@/lib/gallery';
 
 type Viewer = { project: Project; open: boolean };
 
@@ -13,7 +13,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
   const shade = useRef<HTMLDivElement>(null);
   const controls = useRef<HTMLButtonElement>(null);
   const presentation = useRef<{ transform: string; clipPath: string; shade: string; controls: string } | null>(null);
-  const tiles = useRef(new Map<string, HTMLButtonElement>());
+  const tiles = useRef(new Map<string, HTMLElement>());
   const returnUrl = useRef('');
   const wallScroll = useRef(0);
 
@@ -131,14 +131,24 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
 
   return <>
     <div className="photo-wall" aria-label="Work photographs">
-      {projects.map((project, index) => <button key={project.slug} ref={element => { if (element) tiles.current.set(project.slug, element); else tiles.current.delete(project.slug); }} type="button" className="photo-tile" data-viewing={viewer?.project.slug === project.slug} aria-label={`Expand photograph: ${project.alt}`} aria-haspopup="dialog" onClick={() => open(project)}>
-        <Image src={project.cover} alt={project.alt} placeholder="blur" priority={index < 3} sizes="(min-width: 768px) 65vw, 96vw" style={{ objectPosition: project.position }} />
+      {projects.map((project, index) => {
+        // Approved case studies get real crawlable links; ordinary clicks retain the photo viewer.
+        const published = isPublishedProject(project);
+        const Tile = published ? 'a' : 'button';
+        const wide = [0, 4, 5].includes(index % 6);
+        const sizes = `(min-width: 1566px) ${wide ? 978 : 484}px, (min-width: 768px) ${wide ? 62 : 31}vw, ${index % 6 === 0 ? 96 : 48}vw`;
+        return <Tile key={project.slug} ref={(element: HTMLAnchorElement | HTMLButtonElement | null) => { if (element) tiles.current.set(project.slug, element); else tiles.current.delete(project.slug); }} href={published ? `/work/${project.slug}` : undefined} type={published ? undefined : 'button'} className="photo-tile" data-viewing={viewer?.project.slug === project.slug} aria-label={`Expand photograph: ${project.alt}`} aria-haspopup="dialog" onClick={(event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+          if (published && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) return;
+          event.preventDefault(); open(project);
+        }}>
+        <Image src={project.cover} alt={project.alt} placeholder="blur" loading={index < 3 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} sizes={sizes} style={{ objectPosition: project.position }} />
         <span className="tile-expand" aria-hidden="true">↗</span>
-      </button>)}
+      </Tile>;
+      })}
     </div>
     {viewer && <dialog ref={dialog} className="photo-viewer" data-open={viewer.open} aria-label="Expanded photograph" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className="photo-shade" ref={shade} aria-hidden="true" />
-      <div className="expanded-photo" ref={photograph}><Image src={viewer.project.cover} alt={viewer.project.alt} placeholder="blur" sizes="100vw" priority /></div>
+      <div className="expanded-photo" ref={photograph}><Image src={viewer.project.cover} alt={viewer.project.alt} placeholder="blur" sizes="100vw" loading="eager" fetchPriority="high" /></div>
       <button type="button" ref={controls} className="photo-close" aria-label="Close photograph" onClick={close} autoFocus><span aria-hidden="true">×</span></button>
     </dialog>}
   </>;

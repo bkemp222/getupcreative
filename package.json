@@ -9,7 +9,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0",
     "predev": "node scripts/sync-tiger-art.mjs",
-    "prebuild": "node scripts/sync-tiger-art.mjs"
+    "prebuild": "node scripts/sync-tiger-art.mjs",
+    "test:seo": "node --test tests/seo-config.test.mjs",
+    "verify:seo": "node scripts/verify-seo.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
