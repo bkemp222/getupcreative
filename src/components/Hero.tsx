@@ -16,7 +16,7 @@ export function Hero() {
     {heroMedia.poster && <Image className="hero-poster" src={heroMedia.poster} alt="" fill priority sizes="100vw" />}
     {videoSource && <video key={videoSource} className="hero-video" autoPlay muted loop playsInline preload="metadata" poster={heroMedia.poster ?? undefined} aria-hidden="true"><source src={videoSource} type="video/mp4" /></video>}
     <div className="hero-wash" />
-    <div className="hero-heading"><p>TAKE YOUR BRAND EXPERIENCE FROM</p><h1 id="hero-heading"><span className="sr-only">Imagination to Activation</span><span className="headline-art"><Image src="/brand/headliner.png" alt="" width={537} height={358} priority sizes="(min-width: 768px) 850px, 100vw" /></span></h1></div>
+    <div className="hero-heading"><p>TAKE YOUR BRAND EXPERIENCE FROM</p><h1 id="hero-heading"><span className="sr-only">Imagination to Activation</span><span className="headline-art"><Image src="/brand/headliner-transparent.png" alt="" width={937} height={322} priority sizes="(min-width: 768px) 850px, 100vw" /></span></h1></div>
     {!heroMedia.poster && !heroMedia.mobile && !heroMedia.desktop && <span className="asset-note hero-note">Cinematic video placeholder · footage to come</span>}
   </section>;
 }
