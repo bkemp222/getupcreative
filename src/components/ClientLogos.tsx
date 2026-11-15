@@ -4,7 +4,7 @@ const brands = 'Disney, ESPN, Epic Games, Don Julio, Crown Royal, Waze, SheaMois
 
 export function ClientLogos() {
   return <section className="clients" aria-labelledby="clients-heading">
-    <h2 id="clients-heading" className="display">Brands We’ve Built With</h2>
+    <h2 data-reveal id="clients-heading" className="display">Brands We’ve Built With</h2>
     <div className="logo-strip" role="region" aria-label="Client logos; scroll horizontally when reduced motion is enabled" tabIndex={0}>
       <div className="logo-track">
         <div className="logo-group"><Image src="/brand/logo_scroll.svg" alt={brands} width={5138} height={120} unoptimized /></div>

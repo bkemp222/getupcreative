@@ -13,6 +13,7 @@ Open http://localhost:3000. Portfolio: http://localhost:3000/work.
 
 ```sh
 npm run typecheck
+npm run lint
 npm run build
 npm start
 ```
@@ -34,7 +35,7 @@ The headline uses the supplied transparent 937 × 322 artwork at its original as
 ## Assets and decisions pending
 
 - Approved Cinematografica webfont. The local preview uses a trial Heavy file found in the user's installed fonts. Replace the trial font before publication; it is not a production font asset. Inter is self-hosted via Fontsource.
-- Gold background pattern; currently flat gold. A dedicated video poster and optional separate mobile/desktop edits; the supplied background video is connected for both layouts.
+- Gold background pattern; currently flat gold. Optional separate mobile/desktop edits; the supplied video serves both layouts, with a still poster extracted from its first frame.
 - Full-color project photography, titles, descriptions and gallery direction. The supplied logo_scroll.svg is connected as a continuous, edge-faded marquee sized for approximately two to three visible logos, with pause on hover/focus and a manually scrollable reduced-motion layout.
 - Company email and social links. Address transcribed from the supplied reference.
 - Desktop composition review.
@@ -43,3 +44,15 @@ The headline uses the supplied transparent 937 × 322 artwork at its original as
 
 Do not deploy until the missing production assets and integrations are approved.
 # getupcreative
+
+## Motion and interaction layer
+
+The approved composition is retained. Motion uses CSS, IntersectionObserver and a small native Web Animations transition for the modal; no animation dependency is added. `src/components/Motion.tsx` enhances below-fold content once per page visit, keeps initially visible content visible, and removes observers/listeners on navigation. Without JavaScript all content remains visible.
+
+Global tokens in `globals.css` set 180–220ms control responses, 500ms entrances, 400ms exits, and restrained custom easing. Capability and card entrances are staggered by 55ms. Scroll updates are passive and requestAnimationFrame-batched, with gnome displacement capped at 8px and hero wash displacement at 4px. Only transforms and opacity animate; no layout properties animate.
+
+The hanging menu retains native modal focus containment and Escape handling, returns focus to its trigger, and never delays link navigation. Reduced-motion changes immediately disable scroll reveals, parallax, logo motion and the marquee, finish modal transitions, and use the video poster instead of footage. The reduced-motion logo strip remains manually scrollable.
+
+Inter and the existing Cinematografica preview font are preloaded with next/font/local. Images reserve their intrinsic proportions; video fades in when decoded over the supplied-footage poster. Portfolio cards have a restrained reveal layer ready for actual project images; no project photography has been invented.
+
+Contact fields provide accessible inline errors, focus the first invalid field, preserve entered values after delivery failures, prevent duplicate submissions and show an immediate loading state. The backend still explicitly reports that email delivery is not configured.
