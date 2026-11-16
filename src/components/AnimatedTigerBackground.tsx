@@ -18,7 +18,7 @@ type Props = {
 export function AnimatedTigerBackground({
   stripeOpacity = .17, stripeColor = '#bd710a', patternScale = 1,
   driftSpeed = 38, morphSpeed = 36,
-  distortionStrength = 12, animated = true,
+  distortionStrength = 16, animated = true,
 }: Props) {
   const id = useId().replace(/:/g, '');
   const layer = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export function AnimatedTigerBackground({
         <filter id={id} x="-2%" y="-2%" width="104%" height="104%" colorInterpolationFilters="sRGB">
           <feTurbulence type="fractalNoise" baseFrequency=".006 .009" numOctaves="1" seed="8" result="grain" />
           <feOffset in="grain" result="movingGrain">
-            <animate attributeName="dx" values="-24;24;-24" dur={`${duration + 7}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" />
+            <animate attributeName="dx" values="-32;32;-32" dur={`${duration + 7}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" />
           </feOffset>
           <feDisplacementMap in="SourceGraphic" in2="movingGrain" scale={strength * .6} xChannelSelector="R" yChannelSelector="G">
             <animate attributeName="scale" values={`${strength * .6};${strength};${strength * .6}`} dur={`${duration}s`} repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1" />
