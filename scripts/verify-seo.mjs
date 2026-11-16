@@ -25,15 +25,21 @@ for (const path of paths) {
   assert.ok(meta.description && !descriptions.has(meta.description), `${path}: unique description`); descriptions.add(meta.description);
   const placeholder = /\/work\//.test(path); // Update expectations when approved case studies are published.
   assert.match(meta.robots ?? '', !indexable || placeholder ? /noindex/ : /^index,/, `${path}: indexing policy`);
-  assert.equal(meta['og:title'], title);
+  assert.equal(meta['og:title'], path === '/' ? 'Get Up Creative' : title);
   assert.equal(meta['twitter:card'], 'summary_large_image');
-  assert.equal(meta['twitter:description'], meta.description);
+  assert.equal(meta['twitter:description'], path === '/' ? 'Creative Production. Custom Fabrication. Experiential Activations.' : meta.description);
+  assert.equal(meta['og:description'], meta['twitter:description']);
+  assert.equal(meta['og:image'], 'https://getupcreative.com/social_1200x630.png');
+  assert.equal(meta['twitter:image'], meta['og:image']);
+  assert.equal(meta['og:image:width'], '2501');
+  assert.equal(meta['og:image:height'], '1313');
+  assert.equal(meta['og:image:type'], 'image/png');
+  assert.equal(new URL(meta['og:url']).href, new URL(path, 'https://getupcreative.com').href);
+  assert.equal(meta['twitter:title'], meta['og:title']);
   assert.ok(meta['og:image'] && meta['twitter:image']);
   const canonical = [...html.matchAll(/<link\b[^>]*>/g)].map(([tag]) => attrs(tag)).find(a => a.rel === 'canonical')?.href;
   if (origin) {
     assert.equal(new URL(canonical).href, new URL(path, origin).href);
-    assert.equal(new URL(meta['og:url']).href, new URL(canonical).href);
-    assert.ok(meta['og:image'].startsWith(origin));
   }
   const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
   if (origin) {

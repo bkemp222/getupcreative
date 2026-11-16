@@ -11,7 +11,6 @@ export const metadata = pageMetadata({
   title: 'Custom Fabrication & Brand Activation Portfolio',
   description: 'Explore Get Up Creative’s fabrication and experiential production portfolio: custom installations, branded environments, and event builds from our Atlanta-area studio.',
   path: '/work',
-  image: { url: projects[0].cover.src, width: projects[0].cover.width, height: projects[0].cover.height, alt: projects[0].alt },
 });
 export default function Work() {
   return <><Header /><main id="main" className="editorial-portfolio">

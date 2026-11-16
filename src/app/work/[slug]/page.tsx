@@ -13,12 +13,10 @@ export function generateStaticParams() { return projects.map(project => ({ slug:
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = getProject((await params).slug);
   if (!project) notFound();
-  const image = project.seo?.image ?? project.cover;
   return pageMetadata({
     title: project.seo?.title ?? `${projectLabel(project)} — Fabrication Portfolio`,
     description: project.seo?.description ?? project.description ?? project.alt,
     path: `/work/${project.slug}`, indexable: isPublishedProject(project),
-    image: { url: image.src, width: image.width, height: image.height, alt: project.seo?.imageAlt ?? project.alt },
   });
 }
 export default async function ProjectPage({ params }: Props) {

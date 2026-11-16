@@ -2,23 +2,29 @@ import type { Metadata } from 'next';
 import { seoConfig } from './seo-config.mjs';
 import { site } from './site';
 
-type SocialImage = { url: string; width: number; height: number; alt: string };
+export const socialPreview = {
+  title: 'Get Up Creative',
+  description: 'Creative Production. Custom Fabrication. Experiential Activations.',
+  image: { url: 'https://getupcreative.com/social_1200x630.png', width: 2501, height: 1313, type: 'image/png', alt: 'Get Up Creative' },
+};
 export function canonicalUrl(path: string) {
   return seoConfig.siteUrl ? new URL(path, seoConfig.siteUrl).href : undefined;
 }
 
-export function pageMetadata({ title, description, path, indexable = true, image }: {
-  title: string; description: string; path: string; indexable?: boolean; image?: SocialImage;
+export function pageMetadata({ title, description, path, indexable = true }: {
+  title: string; description: string; path: string; indexable?: boolean;
 }): Metadata {
   const fullTitle = `${title} | ${site.name}`;
   const canonical = canonicalUrl(path);
-  const preview = image ?? { url: '/social-image', width: 1200, height: 630, alt: 'Get Up Creative Co. logo on charcoal and Get Up Gold' };
+  const shareTitle = path === '/' ? socialPreview.title : fullTitle;
+  const shareDescription = path === '/' ? socialPreview.description : description;
+  const shareUrl = new URL(path, 'https://getupcreative.com').href;
   return {
     title: { absolute: fullTitle }, description,
     alternates: canonical ? { canonical } : undefined,
     robots: { index: seoConfig.indexable && indexable, follow: true },
-    openGraph: { title: fullTitle, description, url: canonical, siteName: site.name, locale: 'en_US', type: 'website', images: [preview] },
-    twitter: { card: 'summary_large_image', title: fullTitle, description, images: [preview] },
+    openGraph: { title: shareTitle, description: shareDescription, url: shareUrl, siteName: site.name, locale: 'en_US', type: 'website', images: [socialPreview.image] },
+    twitter: { card: 'summary_large_image', title: shareTitle, description: shareDescription, images: [socialPreview.image] },
   };
 }
 
