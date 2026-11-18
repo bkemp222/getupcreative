@@ -20,6 +20,8 @@ export type Project = {
   title: string | null;
   category: string | null;
   client: string | null;
+  /** Display-font wording only; preserves the original project metadata. */
+  drawerHeading?: string;
   location: string | null;
   year: string | null;
   description: string | null;
@@ -83,18 +85,21 @@ export const projects: Project[] = [
   },
   {
     slug: 'project-08', number: '08', title: null, category: "EVENT BACKDROP · CUSTOM PROP FABRICATION", client: "BLACK GIRLS WHO WRITE 2025", location: null, year: null,
+    drawerHeading: "BLACK GIRLS WHO WRITE AWARDS",
     description: "For the 2025 Black Girls Who Write Literary Awards, Get Up Creative fabricated a custom 8' × 8' event backdrop inspired by classic gold records. The installation featured oversized dimensional record props, precision-cut white vinyl lettering, and an integrated shelf for a record player. The finished piece combined graphic elements and custom fabrication into a music-inspired backdrop for the literary celebration.",
     cover: bgww2025, alt: "Black Girls Who Write 2025 Literary Awards backdrop with oversized gold record props, white vinyl lettering, and a record-player shelf.",
     position: '50% 35%', photos: [],
   },
   {
     slug: 'project-09', number: '09', title: null, category: "THEMED EVENT ENVIRONMENT · SCENIC FABRICATION", client: "SWEET 16 FOOD TRUCKS", location: null, year: null,
+    drawerHeading: "SWEET SIXTEEN FOOD TRUCKS",
     description: "For a high-end Sweet 16 celebration, Get Up Creative transformed the concession area into a custom food truck experience. Two full-scale food truck facades featured functional serving windows, original graphic designs, and complete printed vinyl wraps. The surrounding environment included a picnic area, overhead cloud elements, and integrated lighting, creating a playful, fully themed food service experience for party guests.",
     cover: foodTrucks, alt: "Full-scale pink and purple food truck facades with serving windows and vinyl graphics for a Sweet 16 celebration.",
     position: '50% 35%', photos: [],
   },
   {
     slug: 'project-10', number: '10', title: null, category: "CUSTOM GALLERY INSTALLATION · EVENT FABRICATION", client: "BLACK GIRLS WHO WRITE 2026", location: null, year: null,
+    drawerHeading: "BLACK GIRLS WHO WRITE AWARDS",
     description: "For the 2026 Black Girls Who Write Literary Awards, Get Up Creative fabricated a custom black-and-gold gallery wall celebrating authors and their work. The installation featured framed book covers, literary quotes, and curated Instagram Threads posts, arranged as an immersive exhibition-style display. Sponsored by Spotify for Authors and Instagram Threads, the gallery brought together literary storytelling, social media, and scenic fabrication in one cohesive event environment.",
     cover: bgww2026, alt: "Black Girls Who Write 2026 Literary Awards gallery installation with black-and-gold panels and framed book covers.",
     position: '55% 50%', photos: [],

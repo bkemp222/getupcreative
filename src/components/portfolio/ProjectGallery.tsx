@@ -169,7 +169,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
         return <section key={project.slug} id={`information-${project.slug}`} className="project-drawer" data-visible={active} inert={!active} aria-labelledby={`information-title-${project.slug}`}>
           <header className="project-drawer-heading">
             <span className="drawer-eyebrow">OUR WORK / {project.number.padStart(3, '0')}</span>
-            <h2 id={`information-title-${project.slug}`} className="display">{project.client}</h2>
+            <h2 id={`information-title-${project.slug}`} className="display">{project.drawerHeading ?? project.client}</h2>
             <span className="drawer-category">{project.category}</span>
           </header>
           <p className="drawer-description">{project.description}</p>
