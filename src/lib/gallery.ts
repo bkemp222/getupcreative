@@ -1,4 +1,5 @@
 import type { StaticImageData } from 'next/image';
+import fortniteReference from '../../assets/fortnite_billboard.jpg';
 import fortnite from '../../assets/gallery/01_fortnite.jpg';
 import crownAtl from '../../assets/gallery/02_crownatl.jpg';
 import mickey from '../../assets/gallery/03_mickey.jpg';
@@ -22,6 +23,7 @@ export type Project = {
   location: string | null;
   year: string | null;
   description: string | null;
+  reference?: { image: StaticImageData; alt: string };
   cover: StaticImageData;
   alt: string;
   position?: string;
@@ -37,7 +39,9 @@ export type Project = {
 // Only supplied photography is populated. Add approved editorial content here.
 export const projects: Project[] = [
   {
-    slug: 'project-01', number: '01', title: null, category: null, client: null, location: null, year: null, description: null,
+    slug: 'project-01', number: '01', title: null, category: null, client: null, location: null, year: null,
+    description: "For Epic Games' end-of-year company party, Get Up Creative was brought in to take a piece of Fortnite out of the game and into the real world. Using the in-game billboard as our reference, we recreated the structure as a full-scale scenic prop, complete with distressed finishes, layered graffiti graphics, custom supports, and overhead lighting. The finished build became part of an immersive photo opportunity, bringing a recognizable piece of the Fortnite world to life for party guests.",
+    reference: { image: fortniteReference, alt: 'In-game Fortnite reference: a weathered GG billboard with layered graffiti, timber supports, and three overhead lights.' },
     cover: fortnite, alt: 'Fortnite installation with multicolored illuminated lettering and a weathered GG billboard.',
     position: '50% 46%', photos: [],
   },

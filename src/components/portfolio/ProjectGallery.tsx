@@ -4,6 +4,8 @@ import { flushSync } from 'react-dom';
 import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from 'react';
 import { isPublishedProject, type Project } from '@/lib/gallery';
 
+import { ProjectReference } from './ProjectReference';
+
 type Viewer = { project: Project; open: boolean };
 
 export function ProjectGallery({ projects }: { projects: Project[] }) {
@@ -30,7 +32,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
   }, [projects]);
 
   useLayoutEffect(() => {
-    if (!viewer) return;
+    if (!viewer) { dialog.current?.close(); return; }
     const modal = dialog.current!;
     const image = photograph.current!;
     const scrim = shade.current!;
@@ -43,7 +45,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
     const gutter = innerWidth - document.documentElement.clientWidth;
     document.body.style.paddingRight = `${gutter + parseFloat(getComputedStyle(document.body).paddingRight)}px`;
     document.body.style.overflow = 'hidden';
-    if (!modal.open) modal.showModal();
+    if (!modal.open) { modal.showModal(); modal.scrollTop = 0; }
     window.scrollTo({ top: wallScroll.current, behavior: 'instant' });
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     const tokens = getComputedStyle(document.documentElement);
@@ -56,17 +58,21 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
       shadeAnimation?.cancel();
       controlAnimation?.cancel();
       const pad = innerWidth < 600 ? 16 : 56;
-      const scale = Math.min((innerWidth - pad * 2) / viewer.project.cover.width, (innerHeight - 120) / viewer.project.cover.height);
+      const detailed = Boolean(viewer.project.description);
+      const sideBySide = detailed && innerWidth >= 1100;
+      const availableWidth = innerWidth - pad * 2 - (sideBySide ? 364 : 0);
+      const scale = Math.min(availableWidth / viewer.project.cover.width, (innerHeight - 120) / viewer.project.cover.height);
       const width = viewer.project.cover.width * scale;
       const height = viewer.project.cover.height * scale;
-      const left = (innerWidth - width) / 2;
-      const top = (innerHeight - height) / 2;
+      const left = sideBySide ? pad + (availableWidth - width) / 2 : (innerWidth - width) / 2;
+      const top = detailed ? (sideBySide ? Math.max(80, (innerHeight - height) / 2) : 80) : (innerHeight - height) / 2;
+      modal.style.setProperty('--project-caption-top', `${sideBySide ? Math.max(80, (innerHeight - 520) / 2) : top + height + 28}px`);
       Object.assign(image.style, { width: `${width}px`, height: `${height}px`, left: `${left}px`, top: `${top}px` });
       const rect = tile?.getBoundingClientRect();
       const zoom = rect ? Math.max(rect.width / width, rect.height / height) : 1;
       const [px, py] = (viewer.project.position ?? '50% 50%').split(' ').map(value => parseFloat(value) / 100);
       const dx = rect ? rect.left + (rect.width - width * zoom) * px - left : 0;
-      const dy = rect ? rect.top + (rect.height - height * zoom) * py - top : 0;
+      const dy = rect ? rect.top + (rect.height - height * zoom) * py - top + (detailed ? modal.scrollTop : 0) : 0;
       const cropX = rect ? (1 - rect.width / (width * zoom)) * 100 : 0;
       const cropY = rect ? (1 - rect.height / (height * zoom)) * 100 : 0;
       const cropped = { transform: `translate(${dx}px, ${dy}px) scale(${zoom})`, clipPath: `inset(${cropY * py}% ${cropX * (1 - px)}% ${cropY * (1 - py)}% ${cropX * px}%)` };
@@ -146,10 +152,14 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
       </Tile>;
       })}
     </div>
-    {viewer && <dialog ref={dialog} className="photo-viewer" data-open={viewer.open} aria-label="Expanded photograph" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
+    <dialog ref={dialog} className="photo-viewer" data-detailed={Boolean(viewer?.project.description)} data-open={viewer?.open} aria-label="Expanded photograph" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className="photo-shade" ref={shade} aria-hidden="true" />
-      <div className="expanded-photo" ref={photograph}><Image src={viewer.project.cover} alt={viewer.project.alt} placeholder="blur" sizes="100vw" loading="eager" fetchPriority="high" /></div>
+      {viewer && <div className="expanded-photo" ref={photograph}><Image src={viewer.project.cover} alt={viewer.project.alt} placeholder="blur" sizes="100vw" loading="eager" fetchPriority="high" /></div>}
+      {projects.filter(project => project.description).map(project => <figure key={project.slug} className="photo-editorial" hidden={Boolean(viewer && viewer.project.slug !== project.slug)}>
+        <figcaption><p>{project.description}</p></figcaption>
+        {project.reference && <ProjectReference reference={project.reference} active={Boolean(viewer?.open && viewer.project.slug === project.slug)} />}
+      </figure>)}
       <button type="button" ref={controls} className="photo-close" aria-label="Close photograph" onClick={close} autoFocus><span aria-hidden="true">×</span></button>
-    </dialog>}
+    </dialog>
   </>;
 }
