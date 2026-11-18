@@ -39,7 +39,7 @@ export type Project = {
 // Only supplied photography is populated. Add approved editorial content here.
 export const projects: Project[] = [
   {
-    slug: 'project-01', number: '01', title: null, category: null, client: null, location: null, year: null,
+    slug: 'project-01', number: '01', title: null, category: 'CUSTOM SCENIC FABRICATION', client: 'EPIC GAMES', location: null, year: null,
     description: "For Epic Games' end-of-year company party, Get Up Creative was brought in to take a piece of Fortnite out of the game and into the real world. Using the in-game billboard as our reference, we recreated the structure as a full-scale scenic prop, complete with distressed finishes, layered graffiti graphics, custom supports, and overhead lighting. The finished build became part of an immersive photo opportunity, bringing a recognizable piece of the Fortnite world to life for party guests.",
     reference: { image: fortniteReference, alt: 'In-game Fortnite reference: a weathered GG billboard with layered graffiti, timber supports, and three overhead lights.' },
     cover: fortnite, alt: 'Fortnite installation with multicolored illuminated lettering and a weathered GG billboard.',

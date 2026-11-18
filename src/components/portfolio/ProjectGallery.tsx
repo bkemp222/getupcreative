@@ -10,6 +10,8 @@ type Viewer = { project: Project; open: boolean };
 
 export function ProjectGallery({ projects }: { projects: Project[] }) {
   const [viewer, setViewer] = useState<Viewer | null>(null);
+  const [informationOpen, setInformationOpen] = useState(true);
+  const informationToggle = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const photograph = useRef<HTMLDivElement>(null);
   const shade = useRef<HTMLDivElement>(null);
@@ -23,6 +25,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
     const sync = () => {
       const slug = new URLSearchParams(location.hash.slice(1)).get('photo');
       const project = projects.find(item => item.slug === slug);
+      setInformationOpen(true);
       setViewer(previous => project ? { project, open: true } : previous ? { ...previous, open: false } : null);
     };
     // Read the hash after mount so shared photo links and Forward also work.
@@ -45,7 +48,12 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
     const gutter = innerWidth - document.documentElement.clientWidth;
     document.body.style.paddingRight = `${gutter + parseFloat(getComputedStyle(document.body).paddingRight)}px`;
     document.body.style.overflow = 'hidden';
-    if (!modal.open) { modal.showModal(); modal.scrollTop = 0; }
+    if (!modal.open) {
+      modal.showModal();
+      modal.scrollTop = 0;
+      const drawer = document.getElementById(`information-${viewer.project.slug}`);
+      if (drawer) drawer.scrollTop = 0;
+    }
     window.scrollTo({ top: wallScroll.current, behavior: 'instant' });
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     const tokens = getComputedStyle(document.documentElement);
@@ -59,20 +67,20 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
       controlAnimation?.cancel();
       const pad = innerWidth < 600 ? 16 : 56;
       const detailed = Boolean(viewer.project.description);
-      const sideBySide = detailed && innerWidth >= 1100;
-      const availableWidth = innerWidth - pad * 2 - (sideBySide ? 364 : 0);
-      const scale = Math.min(availableWidth / viewer.project.cover.width, (innerHeight - 120) / viewer.project.cover.height);
+      const desktopDrawer = detailed && innerWidth >= 900;
+      const availableWidth = innerWidth - pad * 2 - (desktopDrawer ? 120 : 0);
+      const availableHeight = detailed && !desktopDrawer ? innerHeight * .46 : innerHeight - 120;
+      const scale = Math.min(availableWidth / viewer.project.cover.width, availableHeight / viewer.project.cover.height);
       const width = viewer.project.cover.width * scale;
       const height = viewer.project.cover.height * scale;
-      const left = sideBySide ? pad + (availableWidth - width) / 2 : (innerWidth - width) / 2;
-      const top = detailed ? (sideBySide ? Math.max(80, (innerHeight - height) / 2) : 80) : (innerHeight - height) / 2;
-      modal.style.setProperty('--project-caption-top', `${sideBySide ? Math.max(80, (innerHeight - 520) / 2) : top + height + 28}px`);
+      const left = (innerWidth - width - (desktopDrawer ? 120 : 0)) / 2;
+      const top = detailed && !desktopDrawer ? 76 : (innerHeight - height) / 2;
       Object.assign(image.style, { width: `${width}px`, height: `${height}px`, left: `${left}px`, top: `${top}px` });
       const rect = tile?.getBoundingClientRect();
       const zoom = rect ? Math.max(rect.width / width, rect.height / height) : 1;
       const [px, py] = (viewer.project.position ?? '50% 50%').split(' ').map(value => parseFloat(value) / 100);
       const dx = rect ? rect.left + (rect.width - width * zoom) * px - left : 0;
-      const dy = rect ? rect.top + (rect.height - height * zoom) * py - top + (detailed ? modal.scrollTop : 0) : 0;
+      const dy = rect ? rect.top + (rect.height - height * zoom) * py - top : 0;
       const cropX = rect ? (1 - rect.width / (width * zoom)) * 100 : 0;
       const cropY = rect ? (1 - rect.height / (height * zoom)) * 100 : 0;
       const cropped = { transform: `translate(${dx}px, ${dy}px) scale(${zoom})`, clipPath: `inset(${cropY * py}% ${cropX * (1 - px)}% ${cropY * (1 - py)}% ${cropX * px}%)` };
@@ -121,6 +129,7 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
 
   function open(project: Project) {
     presentation.current = null;
+    setInformationOpen(true);
     wallScroll.current = window.scrollY;
     returnUrl.current = location.pathname + location.search + location.hash;
     history.pushState({ ...history.state, galleryPhoto: true }, '', `#photo=${project.slug}`);
@@ -155,10 +164,22 @@ export function ProjectGallery({ projects }: { projects: Project[] }) {
     <dialog ref={dialog} className="photo-viewer" data-detailed={Boolean(viewer?.project.description)} data-open={viewer?.open} aria-label="Expanded photograph" onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className="photo-shade" ref={shade} aria-hidden="true" />
       {viewer && <div className="expanded-photo" ref={photograph}><Image src={viewer.project.cover} alt={viewer.project.alt} placeholder="blur" sizes="100vw" loading="eager" fetchPriority="high" /></div>}
-      {projects.filter(project => project.description).map(project => <figure key={project.slug} className="photo-editorial" hidden={Boolean(viewer && viewer.project.slug !== project.slug)}>
-        <figcaption><p>{project.description}</p></figcaption>
-        {project.reference && <ProjectReference reference={project.reference} active={Boolean(viewer?.open && viewer.project.slug === project.slug)} />}
-      </figure>)}
+      {projects.filter(project => project.description).map(project => {
+        const active = Boolean(viewer?.open && viewer.project.slug === project.slug && informationOpen);
+        return <section key={project.slug} id={`information-${project.slug}`} className="project-drawer" data-visible={active} inert={!active} aria-labelledby={`information-title-${project.slug}`}>
+          <header className="project-drawer-heading">
+            <span className="drawer-eyebrow">OUR WORK / {project.number.padStart(3, '0')}</span>
+            <h2 id={`information-title-${project.slug}`} className="display">{project.client}</h2>
+            <span className="drawer-category">{project.category}</span>
+          </header>
+          <p className="drawer-description">{project.description}</p>
+          {project.reference && <ProjectReference reference={project.reference} active={active} />}
+        </section>;
+      })}
+      {viewer?.project.description && <button ref={informationToggle} type="button" className="photo-information-toggle" aria-label={informationOpen ? 'Hide project information' : 'Show project information'} aria-expanded={informationOpen} aria-controls={`information-${viewer.project.slug}`} onClick={() => {
+        informationToggle.current?.focus({ preventScroll: true });
+        setInformationOpen(previous => !previous);
+      }}><span aria-hidden="true">i</span></button>}
       <button type="button" ref={controls} className="photo-close" aria-label="Close photograph" onClick={close} autoFocus><span aria-hidden="true">×</span></button>
     </dialog>
   </>;
