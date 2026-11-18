@@ -46,7 +46,8 @@ export const projects: Project[] = [
     position: '50% 46%', photos: [],
   },
   {
-    slug: 'project-02', number: '02', title: null, category: null, client: null, location: null, year: null, description: null,
+    slug: 'project-02', number: '02', title: null, category: 'BRANDED PHOTO OP · SCENIC FABRICATION', client: 'ATLANTA HAWKS × CROWN ROYAL', location: null, year: null,
+    description: 'For the Atlanta Hawks vs. Los Angeles Lakers game at State Farm Arena, Get Up Creative fabricated a co-branded photo opportunity for the Hawks and Crown Royal. Oversized freestanding ATL letters featured gold sequin shimmer faces, purple trim, and gold returns, set against a lush faux floral wall with custom branding. The finished installation brought both brands together in a bold, basketball-inspired backdrop built for fan photos.',
     cover: crownAtl, alt: 'Oversized ATL letters in front of a Crown Royal greenery wall with Atlanta Hawks logos.',
     photos: [],
   },
