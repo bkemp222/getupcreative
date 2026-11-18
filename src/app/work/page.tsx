@@ -8,8 +8,8 @@ import { JsonLd } from '@/components/JsonLd';
 import './portfolio.css';
 
 export const metadata = pageMetadata({
-  title: 'Custom Fabrication & Brand Activation Portfolio',
-  description: 'Explore Get Up Creative’s fabrication and experiential production portfolio: custom installations, branded environments, and event builds from our Atlanta-area studio.',
+  title: 'Custom Event Fabrication Portfolio',
+  description: 'Explore custom scenic fabrication, branded activations, trade show environments, interactive builds, and event installations by Get Up Creative in Atlanta.',
   path: '/work',
 });
 export default function Work() {

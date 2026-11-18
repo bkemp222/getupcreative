@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (!seoConfig.indexable) return [];
   return [
     { url: canonicalUrl('/')! },
-    { url: canonicalUrl('/work')! },
+    { url: canonicalUrl('/work')!, images: projects.map(project => canonicalUrl(project.cover.src)!) },
     { url: canonicalUrl('/privacy-policy')! },
     ...projects.filter(isPublishedProject).map(project => ({
       url: canonicalUrl(`/work/${project.slug}`)!,
