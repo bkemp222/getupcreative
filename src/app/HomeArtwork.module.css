@@ -1,0 +1,14 @@
+/* Both foreground sections share one charcoal canvas and one decorative layer. */
+.transition { display: grid; grid-template-columns: minmax(0, 1fr); position: relative; isolation: isolate; background: var(--charcoal); }
+.transition > :first-child { grid-area: 1 / 1; background: transparent; }
+.transition > :global(.contact) { grid-area: 2 / 1; z-index: 1; background: transparent; }
+.artwork { grid-area: 2 / 1; align-self: start; position: relative; height: 0; z-index: 0; pointer-events: none; user-select: none; }
+.peach { position: absolute; width: 75vw; max-width: none; height: auto; left: -24vw; top: -15vw; pointer-events: none; }
+.transition :global(.contact-title) { margin-left: 0; max-width: none; text-align: right; text-shadow: 0 2px 3px var(--charcoal), 0 0 8px var(--charcoal); }
+.transition :global(.contact-idea) { margin-left: auto; }
+@media (min-width: 768px) {
+  .peach { width: 46.5vw; max-width: 465px; left: -9vw; top: -75px; }
+}
+@media (min-width: 1200px) {
+  .peach { left: -135px; top: -82.5px; }
+}
