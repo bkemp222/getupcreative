@@ -333,3 +333,10 @@ textarea { resize: vertical; min-height: 95px; }
 
 .form-fields input[name="name"], .form-fields input[name="email"] { min-height: 38px; padding-block: 5px; }
 
+
+@media (min-width: 1024px) {
+  .clients { padding: 26.25px 0 18.75px; }
+  .clients h2 { font-size: 33.75px; margin-bottom: 22.5px; }
+  .logo-group { padding-right: 41.25px; }
+  .logo-group img { height: 12vw; }
+}

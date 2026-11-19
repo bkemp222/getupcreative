@@ -12,3 +12,10 @@
 @media (min-width: 1200px) {
   .peach { left: -135px; top: -82.5px; }
 }
+
+/* Desktop contact artwork and lettering form one centered composition. */
+@media (min-width: 1024px) {
+  .peach { width: 320px; max-width: none; left: calc(50% - 376px); top: 35px; }
+  .transition :global(.contact-title) { width: 400px; max-width: none; min-height: 230px; margin-left: calc(50% - 24px); display: flex; flex-direction: column; justify-content: center; text-align: left; }
+  .transition :global(.contact-idea) { margin-left: 0; }
+}
