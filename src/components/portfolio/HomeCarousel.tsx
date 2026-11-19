@@ -111,7 +111,11 @@ export function HomeCarousel({ slides }: { slides: Slide[] }) {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); go(Math.round(positionRef.current) + (event.key === 'ArrowRight' ? 1 : -1)); }
     }}>
     <div className={styles.stage}>
-      <div ref={wheel} tabIndex={0} role="group" aria-label="Portfolio photographs. Use left and right arrow keys to browse." className={styles.wheel} data-dragging={dragging} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerEnd} onPointerCancel={pointerEnd} onLostPointerCapture={event => { if (gesture.current) pointerEnd(event); }}>
+      <div ref={wheel} tabIndex={0} role="group" aria-label="Portfolio photographs. Use left and right arrow keys to browse." className={styles.wheel} data-dragging={dragging} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerEnd} onPointerCancel={pointerEnd} onLostPointerCapture={event => {
+        // Touch implicitly captures the original card. Its lost-capture event bubbles
+        // when we transfer capture to the wheel; that handoff must not end the swipe.
+        if (event.target === event.currentTarget && gesture.current && !event.currentTarget.hasPointerCapture(event.pointerId)) pointerEnd(event);
+      }}>
         {Array.from({ length: 7 }, (_, offset) => base + offset - 3).map(slot => {
           const distance = slot - position;
           const amount = Math.abs(distance);
