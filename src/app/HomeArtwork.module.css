@@ -15,7 +15,7 @@
 
 /* Desktop contact artwork and lettering form one centered composition. */
 @media (min-width: 1024px) {
-  .peach { width: 320px; max-width: none; left: calc(50% - 376px); top: 35px; }
-  .transition :global(.contact-title) { width: 400px; max-width: none; min-height: 230px; margin-left: calc(50% - 24px); display: flex; flex-direction: column; justify-content: center; text-align: left; }
+  .peach { width: clamp(420px, 36vw, 500px); max-width: none; left: calc(50% - 475px); top: -10px; transform: rotate(-10deg); transform-origin: center; }
+  .transition :global(.contact-title) { width: 440px; max-width: none; min-height: 230px; margin-left: calc(50% - 10px); display: flex; flex-direction: column; justify-content: center; text-align: left; }
   .transition :global(.contact-idea) { margin-left: 0; }
 }
