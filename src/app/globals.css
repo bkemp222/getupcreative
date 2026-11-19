@@ -122,7 +122,7 @@ textarea { resize: vertical; min-height: 95px; }
   .capabilities li { gap: 20px; }
   .capabilities .display { font-size: 30px; }
   .capabilities li > span:first-child { font-size: 18px; color: var(--charcoal); }
-  .gnome { width: 380px; right: 16px; top: 25px; }
+  .gnome { width: 380px; right: 16px; top: auto; bottom: -130px; }
   .contact { padding: 65px 8% 90px; }
   .contact-title { margin-left: 0; margin-bottom: 40px; max-width: 65%; }
   .contact-idea { width: 240px; margin-bottom: 12px; }
@@ -139,7 +139,7 @@ textarea { resize: vertical; min-height: 95px; }
 }
 @media (min-width: 768px) and (max-width: 1000px) {
   .what-inner { padding-right: 300px; padding-left: 115px; }
-  .gnome { width: 300px; top: 90px; }
+  .gnome { width: 300px; top: auto; bottom: -130px; }
   .contact-title h2 { font-size: 70px; }
 }
 
