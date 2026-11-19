@@ -312,3 +312,12 @@ textarea { resize: vertical; min-height: 95px; }
 @media (prefers-reduced-motion: reduce) { .submit-icon svg { transform: none !important; } }
 
 .form-fields input[name="name"], .form-fields input[name="email"] { min-height: 38px; padding-block: 5px; }
+
+/* Homepage painter: crop only the artwork, leaving the brush above the footer. */
+.footer-with-gnome { position: relative; z-index: 1; }
+.footer-with-gnome .footer-content { position: relative; z-index: 2; }
+.footer-artwork { position: absolute; inset: -22px 0 0; overflow: hidden; pointer-events: none; user-select: none; }
+.footer .footer-paint-gnome { position: absolute; top: 0; right: -24px; height: calc(100% - 16px); width: auto; max-width: none; margin: 0; }
+@media (min-width: 768px) {
+  .footer .footer-paint-gnome { right: max(24px, calc((100vw - 1200px) / 2)); }
+}
